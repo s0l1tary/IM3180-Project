@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'im3180_db'
+      MYSQL_USER: 'im3180_user'
+      MYSQL_PASSWORD: 'securepassword'
+      MYSQL_ROOT_PASSWORD: 'rootpassword'
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+      - ./certs:/etc/mysql/certs
+    command:
+      - --ssl-ca=/etc/mysql/certs/ca.pem
+      - --ssl-cert=/etc/mysql/certs/server-cert.pem
+      - --ssl-key=/etc/mysql/certs/server-key.pem
+      - --bind-address=0.0.0.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  web:
+    build: .
+    command: >
+      sh -c "until mysqladmin ping -h db -u im3180_user -psecurepassword --silent; do
+               echo 'Waiting for MySQL to be ready...';
+               sleep 2;
+             done &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - ./certs:/etc/mysql/certs
+      - ./certs/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - '8000:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_NAME: 'im3180_db'
+      DB_USER: 'im3180_user'
+      DB_PASSWORD: 'securepassword'
+      DB_HOST: 'db'
+      DB_PORT: '3306'
+      MARIADB_TLS_DISABLE_PEER_VERIFICATION: "1"
+
+volumes:
+  db:  # Fixed: Proper named volume definition
