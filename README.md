@@ -181,10 +181,25 @@ For further assistance or to report issues, please contact the project maintaine
 
 SAN.CNF for regenerating SSL certs with `db` in the Subject Alternative Names (SAN) section, as shown before.
 
-Commands
+## TLDR
+1) Install docker desktop and launch it
+2) Open the project folder in terminal /command prompt
+3) Run the following command with docker desktop opened
 ```
+docker-compose up --build -d
+```
+4) Goto http://localhost:8000
+5) For debugging
+```
+docker-compose logs
+docker-compose logs web
+docker-compose logs db
+docker-compose exec web sh
+ping 8.8.8.8
 mysqladmin ping -h db -u im3180_user -psecurepassword
-mysqladmin -h db -u im3180_user -p --ssl-ca=/usr/local/share/ca-certificates/ca.pem ping
-
-docker-compose exec web sh  
+mysqladmin ping -h db -u im3180_user -psecurepassword --ssl-ca=/usr/local/share/ca-certificates/ca.pem
+```
+6) When done just enter this command
+```
+docker-compose down
 ```
