@@ -1,0 +1,10 @@
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
