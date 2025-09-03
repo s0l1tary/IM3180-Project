@@ -203,3 +203,22 @@ mysqladmin ping -h db -u im3180_user -psecurepassword --ssl-ca=/usr/local/share/
 ```
 docker-compose down
 ```
+
+- export sql
+```
+mysqldump -h db -P 3306 -u root -p im3180_db > test.sql
+```
+
+- modidy mysql data
+```
+docker-compose exec web sh
+mysql -h db -u root -p
+rootpassword
+```
+
+- python manage.py
+```
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py runserver 0.0.0.0:8000
+```

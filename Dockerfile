@@ -27,3 +27,12 @@ COPY ./certs/my.cnf /etc/my.cnf.d/my.cnf
 
 # Disable MariaDB SSL peer verification in dev by environment variable
 ENV MARIADB_TLS_DISABLE_PEER_VERIFICATION=1
+
+# Copy entrypoint script & make executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Start Gunicorn for production; you can replace with runserver for dev
+CMD ["runserver", "app.wsgi:application", "--bind", "0.0.0.0:8000"]

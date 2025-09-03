@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
-
-def home(request):
-    return HttpResponse("Hello, world! Django is running with MySQL connected.")
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
+    path('', views.home, name='home'), # home page
+    path('about/', views.about, name='about'),  # about page
+    path('contact/', views.contact, name='contact'),  # contact page
 ]

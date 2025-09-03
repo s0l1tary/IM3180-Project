@@ -28,12 +28,6 @@ services:
 
   web:
     build: .
-    command: >
-      sh -c "until mysqladmin ping -h db -u im3180_user -psecurepassword --silent; do
-               echo 'Waiting for MySQL to be ready...';
-               sleep 2;
-             done &&
-             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
       - ./certs:/etc/mysql/certs
@@ -50,6 +44,10 @@ services:
       DB_HOST: 'db'
       DB_PORT: '3306'
       MARIADB_TLS_DISABLE_PEER_VERIFICATION: "1"
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+      DJANGO_SUPERUSER_PASSWORD: admin123
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 volumes:
-  db:  # Fixed: Proper named volume definition
+  db:
