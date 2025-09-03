@@ -1,0 +1,13 @@
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Py cache
+__pycache__/
+*.py[cod]
+*$py.class
