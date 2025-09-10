@@ -47,6 +47,13 @@ python manage.py collectstatic
 python manage.py createsuperuser
 ```
 
+- To udpate database
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+
 ## Adding more webpages
 1) Store html pages in main/templates
 2) Modify main/urls.py to path to the page
