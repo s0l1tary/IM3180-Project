@@ -9,7 +9,6 @@ class Questions(models.Model):
     correct_option = models.CharField(
         max_length = 1,
         choices = [('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')]
-
     )
 
     def __str__(self):
