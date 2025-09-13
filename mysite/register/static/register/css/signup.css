@@ -1,0 +1,32 @@
+.slogan {
+    color: #333;
+    font-weight: 1000px;
+}
+
+.card-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn {
+    padding: 10px;
+}
+
+/* Form */
+.btn-signup {
+    /* background-color: #333; */
+    background-color: #333;
+    border-color: #333;
+    color: white;
+    width: 100%;
+}
+
+.btn-signup:hover {
+    background-color: #555;
+    border-color: #555;
+}
+

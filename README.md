@@ -11,6 +11,7 @@ python -m venv [virtal environment name]
 ```
 # for Windows users
 .\venv\Scripts\activate.bat
+.\venv\Scripts\Activate.ps1
 
 # for mac0S / Linux
 source venv/bin/activate
