@@ -1,0 +1,38 @@
+{% extends 'register/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'register/css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="slogan">
+    <h1><strong>DeepLearn</strong></h1>
+    <h2><strong>Learn Deep, Grow High</strong></h2>
+</div>
+
+<div class="card-container">
+    <h2 class="text-center mb-4"><strong>Sign Up</strong></h2>
+    <form method="POST", class="form-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <!-- <div class="mb-3">
+            <label for="signup-email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="signup-email" placeholder="Enter email">
+        </div>
+        <div class="mb-3">
+            <label for="signup-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signup-password" placeholder="Enter password">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="signup-remember">
+            <label class="form-check-label" for="signup-remember">Stay Logged In</label>
+        </div> -->
+        <button type="submit" class="btn btn-signup">Sign Up</button>
+    </form>
+    <p class="register"><a href="{% url 'login' %}" class="text-decoration-none">Already have an account</a></p>
+</div>
+{% endblock %}
