@@ -11,6 +11,7 @@ python -m venv [virtal environment name]
 ```
 # for Windows users
 .\venv\Scripts\activate.bat
+.\venv\Scripts\Activate.ps1
 
 # for mac0S / Linux
 source venv/bin/activate
@@ -46,6 +47,13 @@ python manage.py collectstatic
 ```
 python manage.py createsuperuser
 ```
+
+- To udpate database
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
 
 ## Adding more webpages
 1) Store html pages in main/templates
