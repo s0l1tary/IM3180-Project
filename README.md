@@ -25,7 +25,7 @@ pip install -r requirements.txt
 pip install django
 ```
 
-- to run the server 
+- to run the server (ensure that you are in mysite folder)
 ```
 python manage.py runserver
 ```
