@@ -1,13 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepLearn IE2110 Signals and Systems</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    {% include "navbar.html" %}
-    <h1> welcome to quiz</h1>
-</body>
-</html>
+{% extends "register/base.html" %}
+{% block title %}Quiz · DeepLearn{% endblock %}
+
+{% block content %}
+  {% include "main/navbar.html" %}
+
+  <div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h1 class="h3 mb-0">Quiz</h1>
+      <span class="badge bg-primary">{{ difficulty|title }}</span>
+    </div>
+
+    {% if not questions %}
+      <div class="alert alert-warning">No questions found for {{ difficulty|title }}.</div>
+      <a href="{% url 'quiz' %}" class="btn btn-outline-secondary">Pick another difficulty</a>
+    {% else %}
+      <form method="post" class="mt-2">
+        {% csrf_token %}
+        <input type="hidden" name="difficulty" value="{{ difficulty }}">
+        {% for q in questions %}
+          <input type="hidden" name="qids" value="{{ q.id }}">
+          <div class="card mb-3 p-3">
+            <h5 class="mb-2">{{ forloop.counter }}. {{ q.text }}</h5>
+            <div class="ms-2">
+              {% for opt in q.options.all %}
+                <div class="form-check">
+                  <input class="form-check-input" type="radio"
+                         name="q{{ q.id }}" id="q{{ q.id }}_{{ opt.id }}"
+                         value="{{ opt.id }}" required>
+                  <label class="form-check-label" for="q{{ q.id }}_{{ opt.id }}">
+                    {{ opt.text }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary">Submit</button>
+          <a class="btn btn-outline-secondary" href="{% url 'quiz' %}">Change difficulty</a>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}
+
