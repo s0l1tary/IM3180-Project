@@ -11,9 +11,13 @@ python -m venv [virtal environment name]
 ```
 # for Windows users
 .\venv\Scripts\activate.bat
+.\venv\Scripts\Activate.ps1
 
 # for mac0S / Linux
 source venv/bin/activate
+
+# bypass shit
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 - install dependencies 
@@ -24,7 +28,7 @@ pip install -r requirements.txt
 pip install django
 ```
 
-- to run the server 
+- to run the server (ensure that you are in mysite folder)
 ```
 python manage.py runserver
 ```
@@ -46,6 +50,13 @@ python manage.py collectstatic
 ```
 python manage.py createsuperuser
 ```
+
+- To udpate database
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
 
 ## Adding more webpages
 1) Store html pages in main/templates
