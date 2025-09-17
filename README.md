@@ -15,6 +15,9 @@ python -m venv [virtal environment name]
 
 # for mac0S / Linux
 source venv/bin/activate
+
+# bypass shit
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 - install dependencies 
