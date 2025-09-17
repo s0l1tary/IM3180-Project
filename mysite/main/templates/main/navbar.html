@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">DeepLearn</a>
         <div class="navbar-nav">
@@ -6,7 +6,20 @@
             <a class="nav-link" href="{% url 'quiz' %}">Quiz</a>
             <a class="nav-link" href="{% url 'practice' %}">Practice</a>
             <a class="nav-link" href="{% url 'grades' %}">Grades</a>
-            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+            
+            {% if user.is_authenticated %}
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Welcome, {{ user.username }}!
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+            {% else %}
+                <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
         </div>
     </div>
 </nav>
