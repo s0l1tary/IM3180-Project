@@ -1,0 +1,233 @@
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+
+            // Convert sheet to JSON to filter blank rows
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+            // Filter out blank rows (rows where all cells are empty, null, or undefined)
+            var filteredData = jsonData.filter(row => row.some(filledCell));
+
+            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+            var headerRowIndex = filteredData.findIndex((row, index) =>
+              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+            );
+            // Fallback
+            if (headerRowIndex === -1 || headerRowIndex > 25) {
+              headerRowIndex = 0;
+            }
+
+            // Convert filtered JSON back to CSV
+            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+            return csv;
+        } catch (e) {
+            console.error(e);
+            return "";
+        }
+    }
+    return gk_fileData[filename] || "";
+    }
+    </script><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IE2110 Content</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #C9E3FD;
+}
+.navbar {
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar .left {
+  font-size: 28px;
+  font-weight: bold;
+  color: #000;
+}
+.navbar .center {
+  display: flex;
+  gap: 20px;
+}
+.navbar .center a {
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+}
+.navbar .center a:hover {
+  text-decoration: underline;
+}
+.navbar .right {
+  display: flex;
+  align-items: center;
+}
+.navbar .right .user {
+  margin-right: 10px;
+  color: #000;
+  font-size: 16px;
+}
+.navbar .right .profile {
+  width: 30px;
+  height: 30px;
+  background-color: #1da1f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+}
+.content {
+  padding: 20px;
+}
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.in-progress {
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+.panel {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #F3F3F3;
+  transition: all 0.3s ease;
+}
+.panel.expanded {
+  width: 90%;
+  height: 600px;
+  overflow-y: auto; /* Enable vertical scrollbar */
+}
+.panel-content {
+  display: none;
+}
+.panel.expanded .panel-content {
+  display: block;
+}
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
+h2 {
+  font-size: 18px;
+  margin-top: 20px;
+}
+ul {
+  margin-left: 20px;
+}
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.pdf-preview {
+  text-align: center;
+  padding: 20px;
+  color: #555;
+}
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: none;
+}
+.panel.expanded .pdf-iframe {
+  display: block;
+}
+.search-bar {
+  padding: 8px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 14px;
+}
+.search-bar:focus {
+  outline: none;
+  border-color: #f48024;
+  box-shadow: 0 0 5px rgba(244, 128, 36, 0.5);
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+<div class="left">DeepLearn</div>
+<div class="center">
+  <a href="#">Content</a>
+  <a href="#">Practice</a>
+</div>
+<div class="right">
+  <span class="user">Hi, XXX</span>
+  <div class="profile">👤</div>
+</div>
+</div>
+<div class="content">
+<div class="content-header">
+  <h1>IE2110 Content</h1>
+  <input type="text" class="search-bar" placeholder="Search Topiv" onkeypress="if(event.key === 'Enter') performSearch()">
+</div>
+<div class="in-progress">
+
+  <div>
+    <H1>3. Sinusoids</H1>
+  </div>
+</div>
+<div class="panel" onclick="this.classList.toggle('expanded')">
+  <h2>Outline of Signals & Systems - Part 1</h2>
+  <div class="panel-content">
+    <div class="pdf-preview">Click to view the full PDF document</div>
+    <iframe class="pdf-iframe" src="IE2110 Part 1 (Weeks 1-5 by Prof Teh Kah Chan)(1).pdf" title="IE2110 Part 1 PDF"></iframe>
+  </div>
+</div>
+<div class="panel" onclick="this.classList.toggle('expanded')">
+  <h2>Outline of Signals & Systems - Part 2</h2>
+  <div class="panel-content">
+    <div class="pdf-preview">Click to view the full PDF document</div>
+    <iframe class="pdf-iframe" src="IE2110 Part 2 (Weeks 6-11 by Prof Er Meng Hwa).pdf" title="IE2110 Part 2 PDF"></iframe>
+  </div>
+</div>
+<div class="panel" onclick="this.classList.toggle('expanded')">
+  <h2>Outline of Signals & Systems - Part 3</h2>
+  <div class="panel-content">
+    <div class="pdf-preview">Click to view the full PDF document</div>
+    <iframe class="pdf-iframe" src="IE2110 .pdf" title="IE2110 Part 3 PDF"></iframe>
+  </div>
+</div>
+</div>
+<script>
+function performSearch() {
+  const query = document.querySelector('.search-bar').value.trim();
+  if (query) {
+    alert(`Searching for: ${query}. Please implement your search logic here!`);
+    // Add your search logic, e.g., searching within PDFs or page content
+  }
+}
+</script>
+</body>
+</html>
