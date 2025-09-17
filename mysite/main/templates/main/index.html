@@ -1,10 +1,63 @@
-<!DOCTYPE html>
+{% extends "main/base.html" %}
+{% load static %}
 
-<html>
-    <body>
-        {% include "main/navbar.html" %}
-        <h1>Index</h1>
-        <p>Login <a href="/login">Here</a></p>
-    </body>
+{% block title %}Deep Learn{% endblock %}
 
-</html>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="row-1">
+        <div class="row-1-col-1">
+            <h1>Welcome to DeepLearn</h1>
+            <p>Your IE2110 Signals and Systems journey starts here!</p>
+            <p>Ready to find your level?</p>
+            <a href="{% url 'quiz' %}" class="btn btn-quiz">Take Quiz</a>
+        </div>
+        <div class="row-1-col-2">
+            <!-- <img src="static 'main/image/"> -->
+        </div>
+    </div>
+
+    <div class="row-2">
+        <h2>Start today in 3 easy steps:</h2>
+        <div class="steps">
+            <div>
+                <h5>Create your free account</h5>
+                <p>Sign up with your email or social media account.</p>
+            </div>
+            <div>
+                <h5>Take our placement quiz</h5>
+                <p>Take our placement quiz to determine your proficiency in the topics</p>
+            </div>
+            <div>
+                <h5>Start learning immediately</h5>
+                <p>Access all our course materials and begin learning</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-3">
+        <h2>Our Features</h2>
+        <div class="features">
+            <div>
+                <h5>Adaptive Quizzes</h5>
+                <p>Test yourself at basic, intermediate, and advanced levels</p>
+            </div>
+            <div>
+                <h5>AI Explanations</h5>
+                <p>Get solutions for questions answered incorrectly</p>
+            </div>
+            <div>
+                <h5>Weakness Analysis</h5>
+                <p>Identify topics you need to review and focus your study</p>
+            </div>
+            <div>
+                <h5>Track Progress</h5>
+                <p>Monitor your improvement and unlock advanced content as you progress</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
