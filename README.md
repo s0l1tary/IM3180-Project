@@ -65,7 +65,8 @@ python manage.py migrate
 
 
 ## For AI
-- https://platform.openai.com/docs/overview
+- https://docs.perplexity.ai/getting-started/quickstart#python
+- api_key = "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"
 
 
 
