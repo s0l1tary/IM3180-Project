@@ -16,6 +16,6 @@ payload = {
     "stream": False  # Enable streaming for real-time responses
 }
 
-response = requests.post(url, headers=headers, json=payload, stream=True)
+response = requests.post(url, headers=headers, json=payload)
 data = response.json()
 print(data["choices"][0]["message"]["content"])

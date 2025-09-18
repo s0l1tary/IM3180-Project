@@ -1,6 +1,9 @@
 # Notes
 - We are currently just using Django and its built in database sqlite3 and no longer using docker and mysql
 
+## Flowchart
+![flowchart image](./flowchart.jpg)
+
 ## How to run?
 - Prereq: have python installed with pip
 - create a virtual environment
@@ -66,7 +69,6 @@ python manage.py migrate
 
 ## For AI
 - https://docs.perplexity.ai/getting-started/quickstart#python
-- api_key = "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"
 
 
 
