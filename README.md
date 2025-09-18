@@ -64,4 +64,8 @@ python manage.py migrate
 3) Modify main.views.py to render the page
 
 
+## For AI
+- https://platform.openai.com/docs/overview
+
+
 
