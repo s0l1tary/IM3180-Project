@@ -8,5 +8,4 @@ urlpatterns = [
     path("content/", views.content, name="content"),
     path("grades/", views.grades, name="grades"),
     path("practice/", views.practice, name="practice"),
-    path("quiz/", views.quiz, name="quiz"),        # quiz flow (picker diff then 5Qs then results)
 ]
