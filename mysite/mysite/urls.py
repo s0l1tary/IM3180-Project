@@ -21,7 +21,7 @@ from register import views as v
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('quiz/'. include('quiz.urls')),
+    path('quiz/', include('quiz.urls')),
     path('register/', v.signup, name='signup'),
     path('', include('django.contrib.auth.urls')),
 ]
