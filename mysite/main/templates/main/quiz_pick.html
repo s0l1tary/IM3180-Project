@@ -3,10 +3,22 @@
 
 {% block content %}
   {% include "main/navbar.html" %}
-
   <div class="container py-4">
     <h1 class="h3 mb-3">Start a Quiz</h1>
+
     <form method="get" action="{% url 'quiz' %}" class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="topic" class="col-form-label">Topic</label>
+      </div>
+      <div class="col-auto">
+        <select id="topic" name="topic" class="form-select">
+          <option value="">All topics</option>
+          {% for t in topics %}
+            <option value="{{ t.slug }}">{{ t.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
       <div class="col-auto">
         <label for="difficulty" class="col-form-label">Difficulty</label>
       </div>
@@ -17,9 +29,11 @@
           <option value="HARD">Hard</option>
         </select>
       </div>
+
       <div class="col-auto">
         <button class="btn btn-primary">Start Quiz</button>
       </div>
     </form>
   </div>
 {% endblock %}
+

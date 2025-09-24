@@ -1,0 +1,46 @@
+topic,difficulty,text,opt1,opt2,opt3,opt4,correct
+Signals & Systems Overview,EASY,Determine the classification of x(t)=2t.,Random,Continuous-time and discrete-value,Continuous-time and continuous-value,Discrete-time and discrete-value,3
+Signals & Systems Overview,EASY,Determine the classification of x[n]=(-1)^n.,Periodic,Energy-type,Odd,Continuous-value,1
+Signals & Systems Overview,EASY,Determine the classification of the signal x(t)=-2e^{-2|t|}.,Random,Discrete-time,Odd,Energy-type,4
+Signals & Systems Overview,EASY,Determine the energy of x(t)=-2sin(2πt).,-2,2,-4,Infinite,4
+Signals & Systems Overview,EASY,The sequence x[n]=1 for all n is:,Energy-type,Odd,Even,Random,3
+Signals & Systems Overview,MEDIUM,Given x(t)=-2·rect(t), what is the energy E=∫|x(t)|^2 dt?,2,4,8,16,2
+Signals & Systems Overview,MEDIUM,If E_x=4 for x(t), what is the energy of y(t)=0.5·x(-t)?,0.5,1,2,4,2
+Signals & Systems Overview,MEDIUM,The signal x(t)=-2e^{-2t}u(t) is best classified as:,Energy-type,Power-type,Neither,Periodic,1
+Signals & Systems Overview,MEDIUM,For any signal x(t), x(t)·δ(t)= ?,1,x(t),x(0)·δ(t),0,3
+Signals & Systems Overview,MEDIUM,Time reversal y[n]=x[-n] changes the signal’s energy by:,Increases,Decreases,Unchanged,Doubles,3
+Signals & Systems Overview,HARD,For y(t)=-5·x(t-5), which is true?,Memoryless,Nonlinear,Has memory,Noncausal,3
+Signals & Systems Overview,HARD,For y[n]=x[n-1]+x[n]+x[n+1], which is true?,Noncausal,Memoryless,Time-varying,Unstable,1
+Signals & Systems Overview,HARD,Let h(t)=2·rect(t/2). The peak value of y(t)=h*h is:,2,4,6,8,2
+Signals & Systems Overview,HARD,Energy of a signal with autocorrelation R_xx(τ)=4-4|τ| for |τ|≤1 and 0 otherwise is:,0,2,4,8,3
+Signals & Systems Overview,HARD,The duration of R_xy(τ) for x(t)=rect(t/4) and y(t)=rect(t) is:,0 s,2 s,4 s,5 s,4
+Sinusoids,EASY,The sinusoid x(t)=2sin(2πt) is:,Energy-type,Power-type periodic,Random,Aperiodic,2
+Sinusoids,EASY,Amplitude of x(t)=3cos(5t+π/4) is:,1,3,5,π/4,2
+Sinusoids,EASY,Angular frequency of x(t)=cos(2000πt) is:,200π,1000π,2000π,4000π,3
+Sinusoids,EASY,Initial phase of x(t)=cos(10t-π/3) at t=0 is:,π/3,-π/3,0,π,2
+Sinusoids,EASY,The sequence x[n]=(-1)^n is:,Not periodic,Periodic with N=2,Periodic with N=4,Random,2
+Sinusoids,MEDIUM,Fundamental frequency of x(t)=cos(2000πt)+cos(10000πt) is:,500 Hz,1000 Hz,2000 Hz,5000 Hz,2
+Sinusoids,MEDIUM,DC value of x(t)=Acos^2(2πft)+Bsin^2(2πft) is:,A,B,(A+B)/2,0,3
+Sinusoids,MEDIUM,For x(t)=cos(2πf0 t+φ), the period T equals:,2πf0,1/f0,φ/2π,2π/φ,2
+Sinusoids,MEDIUM,The sum x(t)=cos(4t)+sin(2t) has a Fourier series representation because:,Only cos has FS,Only sin has FS,Both are periodic with rational frequency ratio,Neither is periodic,3
+Sinusoids,MEDIUM,If f=50 Hz then ω equals:,50,100,50π,100π,4
+Sinusoids,HARD,The complex exponential x(t)=e^{jωt} is:,Energy-type,Power-type,Neither,Random,2
+Sinusoids,HARD,If x(t) is real and even, then X(f) is:,Real and even,Real and odd,Imaginary and even,Complex and odd,1
+Sinusoids,HARD,The product cos(2π·1000 t)·cos(2π·2000 t) contains which frequencies?,1 kHz and 3 kHz,2 kHz only,4 kHz only,6 kHz only,1
+Sinusoids,HARD,If a signal has FS components at {f0,20f0,40f0}, the highest common factor (fundamental) is:,f0,20f0,40f0,60f0,1
+Sinusoids,HARD,For a rectangular pulse of amplitude A and width τ, |X(f)| is proportional to:,Aτ·sinc(fτ),A·δ(f),A/τ,0,1
+LTI Systems,EASY,Which property is necessary for an LTI system?,Linearity only,Time-invariance only,Causality only,Linearity and time-invariance,4
+LTI Systems,EASY,For an LTI system the output is y=x*h. Here “*” means:,Addition,Multiplication,Convolution,Division,3
+LTI Systems,EASY,BIBO stability means:,Output decays to zero,Bnd input ⇒ bnd output,Finite support impulse response only,Causality is satisfied,2
+LTI Systems,EASY,A continuous-time LTI system is causal iff h(t)=0 for:,t>0,t<0,|t|>0,All t,2
+LTI Systems,EASY,The response to δ(t) is:,x(t),h(t),x*h,0,2
+LTI Systems,MEDIUM,For y[n]=0.5y[n-1]+x[n], the system is:,Stable,Unstable,Memoryless,Time-varying,1
+LTI Systems,MEDIUM,For y[n]=x[n]-x[n-1], |H(e^{jω})| at ω=0 equals:,0,1,2,∞,1
+LTI Systems,MEDIUM,Overall frequency response of a cascade of two LTI systems is:,H1+H2,H1·H2,H1/H2,max(H1,H2),2
+LTI Systems,MEDIUM,For h[n]=(1/3)^n u[n], the system is:,Causal only,Stable only,Causal and stable,Neither,3
+LTI Systems,MEDIUM,Length of the linear convolution of lengths N and M is:,N+M,N+M-1,max(N,M),N·M,2
+LTI Systems,HARD,For LTI with impulse response h(t), input e^{jωt} produces:,e^{jωt},H(jω),H(jω)e^{jωt},h(t),3
+LTI Systems,HARD,To recover x from y in frequency domain when Y=X·H and H≠0 we:,Add H,Multiply by H,Divide by H,Convolve with H,3
+LTI Systems,HARD,If x(t) has duration Tx and h(t)=rect(t/τ), the duration of y=x*h is approximately:,Tx+τ,|Tx-τ|,max(Tx,τ),min(Tx,τ),1
+LTI Systems,HARD,The system y[n]=x[-n] is:,Time-invariant,Time-varying,Causal,Stable and causal,2
+LTI Systems,HARD,The ideal differentiator H(jω)=jω is:,BIBO stable,Not BIBO stable,Causal and stable,Memoryless,2
