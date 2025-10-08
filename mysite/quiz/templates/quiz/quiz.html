@@ -1,45 +1,43 @@
 {% extends "main/base.html" %}
-{% block title %}Quiz · DeepLearn{% endblock %}
+{% load static %}
 
-{% block content %}
-
-  <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <h1 class="h3 mb-0">Quiz</h1>
-      <span class="badge bg-primary">{{ difficulty|title }}</span>
-    </div>
-
-    {% if not questions %}
-      <div class="alert alert-warning">No questions found for {{ difficulty|title }}.</div>
-      <a href="{% url 'quiz' %}" class="btn btn-outline-secondary">Pick another difficulty</a>
-    {% else %}
-      <form method="post" class="mt-2">
-        {% csrf_token %}
-        <input type="hidden" name="difficulty" value="{{ difficulty }}">
-        {% for q in questions %}
-          <input type="hidden" name="qids" value="{{ q.id }}">
-          <div class="card mb-3 p-3">
-            <h5 class="mb-2">{{ forloop.counter }}. {{ q.text }}</h5>
-            <div class="ms-2">
-              {% for opt in q.options.all %}
-                <div class="form-check">
-                  <input class="form-check-input" type="radio"
-                         name="q{{ q.id }}" id="q{{ q.id }}_{{ opt.id }}"
-                         value="{{ opt.id }}" required>
-                  <label class="form-check-label" for="q{{ q.id }}_{{ opt.id }}">
-                    {{ opt.text }}
-                  </label>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-        {% endfor %}
-        <div class="d-flex gap-2">
-          <button class="btn btn-primary">Submit</button>
-          <a class="btn btn-outline-secondary" href="{% url 'quiz' %}">Change difficulty</a>
-        </div>
-      </form>
-    {% endif %}
-  </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}">
 {% endblock %}
 
+{% block title %}
+Quiz · DeepLearn
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100 d-flex flex-column justify-content-between">
+  <!-- Quiz area -->
+  <div class="row flex-grow-1">
+    <!-- Left: Question -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center border-end">
+      <h3 id="question-text"></h3>
+    </div>
+
+    <!-- Right: Options -->
+    <div class="col-md-6 d-flex flex-column align-items-start justify-content-center px-5">
+      <form id="quiz-form" method="POST" action="{% url 'submit_quiz' quiz.id %}">
+        {% csrf_token %}
+        <div id="options-container"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom: Next button -->
+  <div class="text-center py-3 border-top">
+    <button id="next-btn" class="btn btn-primary btn-lg" disabled>Next</button>
+  </div>
+</div>
+
+<!-- JSON data for JS -->
+{{ questions|json_script:"questions-data" }}
+
+<!-- Pass submit url -->
+
+<!-- Link external JS -->
+<script src="{% static 'quiz/js/quiz.js' %}"></script>
+{% endblock %}
