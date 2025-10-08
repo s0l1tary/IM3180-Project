@@ -1,0 +1,89 @@
+.row-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: rgb(173, 173, 255);
+    padding: 30px 100px;
+}
+
+.row-1-col-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 400px;
+}
+
+.btn-quiz {
+    margin: 20px 0px;
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: rgb(24, 24, 24);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-quiz:hover {
+    background-color: #373737;
+    color: white;
+    cursor: pointer;
+}
+
+.row-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 30px 100px;
+    height: 300px;
+}
+
+.steps {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.steps > div {
+    flex: 1;                        /* equal width columns */
+    padding: 15px;
+}
+
+.row-3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 30px 100px;
+    background-color: rgb(140, 140, 255);
+    height: 300px;
+}
+
+.features {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.features > div {
+    flex: 1;                        /* equal width columns */
+    border: 1px solid #ddd;           /* Light gray border */
+    border-radius: 15px;
+    padding: 15px;
+    background-image: rgb(216, 216, 255);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.features > div:hover {
+    transform: translateY(-5px);      /* Slight lift */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Deeper shadow */
+}
+
+p {
+    margin: 0px;
+}
+
+h1 {
+    margin: 0px;
+}

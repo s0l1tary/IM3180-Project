@@ -41,8 +41,8 @@ python manage.py startapp
 ```
 
 - To update assets such as images,etc.
+    - note that each inner project subfolder (e.g. Main / Quiz / Register) should have their own static files folder. The below command collects static files from the entire project folder and places them into project root 'mysite' for reference. changes to assets should be made in the respective inner project subfolders
 ```
-python manage.py migrate
 python manage.py collectstatic
 ```
 
@@ -51,7 +51,7 @@ python manage.py collectstatic
 python manage.py createsuperuser
 ```
 
-- To udpate database
+- To udpate database (whenever there are changes)
 ```
 python manage.py makemigrations
 python manage.py migrate
