@@ -1,0 +1,21 @@
+{% extends "quiz/base.html" %}
+{% load static %}
+
+{% block title %}Results · DeepLearn{% endblock %}
+
+{% block content %}
+  <div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h1 class="h3 mb-0">Your Results</h1>
+    </div>
+
+    <div class="alert alert-info">
+      Score: <strong>{{ score }}</strong>
+    </div>
+
+    <div>
+      <a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
+      <a class="btn btn-outline-secondary" href="{% url 'take_quiz' %}">Next</a>
+    </div>
+  </div>
+{% endblock %}

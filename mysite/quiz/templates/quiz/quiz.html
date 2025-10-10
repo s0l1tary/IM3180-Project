@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "quiz/base.html" %}
 {% load static %}
 
 {% block extra_css %}
@@ -11,19 +11,29 @@ Quiz · DeepLearn
 
 {% block content %}
 <div class="container-fluid vh-100 d-flex flex-column justify-content-between">
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
+  
   <!-- Quiz area -->
   <div class="row flex-grow-1">
     <!-- Left: Question -->
-    <div class="col-md-6 d-flex align-items-center justify-content-center border-end">
-      <h3 id="question-text"></h3>
+    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center border-end position-relative">
+      <!-- Difficulty Tag -->
+      <div id="difficulty-tag" 
+          class="position-absolute top-0 start-0 m-4 badge rounded-pill bg-secondary px-3 py-2 fs-6">
+      </div>
+
+      <!-- Question text -->
+      <h3 id="question-text" class="text-center px-4"></h3>
     </div>
 
     <!-- Right: Options -->
     <div class="col-md-6 d-flex flex-column align-items-start justify-content-center px-5">
-      <form id="quiz-form" method="POST" action="{% url 'submit_quiz' quiz.id %}">
-        {% csrf_token %}
-        <div id="options-container"></div>
-      </form>
+      {% csrf_token %}
+      <input type="hidden" id="quiz-id" value="{{ quiz.id }}">
+      <div id="options-container" class="d-grid gap-2"></div>
     </div>
   </div>
 
@@ -37,6 +47,10 @@ Quiz · DeepLearn
 {{ questions|json_script:"questions-data" }}
 
 <!-- Pass submit url -->
+<script>
+  const submitUrl = "{% url 'submit_quiz' quiz.id %}";
+  const resultsUrl = "{% url 'results' %}";
+</script>
 
 <!-- Link external JS -->
 <script src="{% static 'quiz/js/quiz.js' %}"></script>

@@ -42,7 +42,6 @@ class Option(models.Model):
 # ------------------------------
 class UserTopicProgress(models.Model):
     MASTERY_LEVELS = (
-        ("NOT_STARTED", "Not Started"),
         ("LEARNING", "Learning"),
         ("MASTERED", "Mastered"),
     )
@@ -50,7 +49,7 @@ class UserTopicProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="topic_progress")
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name="user_progress")
     score = models.FloatField(default=0.0)  # 0–100 scale (or 0–1 if you prefer)
-    mastery_level = models.CharField(max_length=20, choices=MASTERY_LEVELS, default="NOT_STARTED")
+    mastery_level = models.CharField(max_length=20, choices=MASTERY_LEVELS, default="LEARNING")
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:

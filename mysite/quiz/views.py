@@ -20,43 +20,29 @@ def take_quiz(request):
 
         # Create placement quiz
         quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="PLACEMENT")
-
-        # Pull 10 random questions from Topic 1
-        questions = list(Question.objects.filter(topic=topic).order_by("?")[:5])
     else:
         # 2. Returning user → find their current topic
         # Pick the topic with the lowest score that is not mastered
-        progress = user_progress.filter(mastery_level__in=["NOT_STARTED", "LEARNING"]).order_by("score").first()
+        progress = user_progress.filter(mastery_level="LEARNING").first()
 
         if not progress:
-            # If all topics mastered, redirect to dashboard or show completion
-            return render(request, "quiz/completed.html")
+            # If all mastered, unlock the next topic
+            last_progress = user_progress.order_by("-topic__id").first()
+            next_topic = Topic.objects.filter(id__gt=last_progress.topic.id).order_by("id").first()
+
+            if not next_topic:
+                return render(request, "quiz/completed.html")
+
+            progress = UserTopicProgress.objects.create(user=user, topic=next_topic, score=0.0, mastery_level="LEARNING")
 
         topic = progress.topic
 
         # Create a new quiz session
         quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")
 
-        # 3. Select questions
-        questions = []
-
-        # (A) Pull 8 from current topic
-        current_qs = list(Question.objects.filter(topic=topic).order_by("?")[:8])
-        questions.extend(current_qs)
-
-        # (B) Pull 2 review questions from mastered topics
-        mastered_topics = user_progress.filter(mastery_level="MASTERED")
-        if mastered_topics.exists():
-            review_topic = random.choice(mastered_topics).topic
-            review_qs = list(Question.objects.filter(topic=review_topic).order_by("?")[:2])
-            questions.extend(review_qs)
-
-        # Ensure we always have 10 questions
-        if len(questions) < 10:
-            extra_qs = list(Question.objects.filter(topic=topic).order_by("?")[:(10 - len(questions))])
-            questions.extend(extra_qs)
-
-        random.shuffle(questions)  # mix review and current
+    # Get 10 random questions from the chosen topic
+    questions = list(Question.objects.filter(topic=topic).order_by("?")[:10])
+    random.shuffle(questions)  # mix review and current
 
     # Serialize questions for JSON
     questions_data = [
@@ -86,29 +72,34 @@ def take_quiz(request):
 
 @login_required
 def submit_quiz(request, quiz_id):
-    quiz = get_object_or_404(QuizSession, id=quiz_id, user=request.user)
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=400)
 
+    user = request.user
     try:
-        data = json.loads(request.body.decode("utf-8"))
-        answers = data.get("answers", {})
-    except (json.JSONDecodeError, AttributeError):
-        return JsonResponse({"error": "Invalid JSON payload"}, status=400)
+        quiz = QuizSession.objects.get(id=quiz_id, user=user)
+    except QuizSession.DoesNotExist:
+        return JsonResponse({"error": "Quiz not found"}, status=404)
 
-    total_correct = 0
-    topic_accuracy = {}  # {topic_id: [num_correct, num_total]}
+    data = json.loads(request.body)
+    answers = data.get("answers", {})
 
-    for question_id, option_id in answers.items():
+    total_questions = len(answers)
+    correct_count = 0
+
+    # Process each question
+    for qid, selected_opt_id in answers.items():
         try:
-            question = Question.objects.get(id=question_id)
-            chosen_option = Option.objects.get(id=option_id)
+            question = Question.objects.get(id=qid)
+            chosen_option = Option.objects.get(id=selected_opt_id)
+            is_correct = chosen_option.is_correct
         except (Question.DoesNotExist, Option.DoesNotExist):
             continue
 
-        is_correct = chosen_option.is_correct
         if is_correct:
-            total_correct += 1
+            correct_count += 1
 
-        # Record answer
+        # Record each question attempt
         QuizQuestionRecord.objects.create(
             quiz_session=quiz,
             question=question,
@@ -118,50 +109,34 @@ def submit_quiz(request, quiz_id):
             topic=question.topic,
         )
 
-        # Track topic accuracy
-        tid = question.topic.id
-        if tid not in topic_accuracy:
-            topic_accuracy[tid] = [0, 0]
-        topic_accuracy[tid][1] += 1
-        if is_correct:
-            topic_accuracy[tid][0] += 1
-
-    # Compute score
-    quiz.score = (total_correct / max(1, len(answers))) * 100
+    # Calculate score
+    score = (correct_count / total_questions) * 100 if total_questions > 0 else 0
+    quiz.score = score
     quiz.completed_at = timezone.now()
     quiz.save()
 
-    # Update user topic progress
-    alpha = 0.5
-    beta = 0.7
+    # Update UserTopicProgress
+    progress, _ = UserTopicProgress.objects.get_or_create(user=user, topic=quiz.topic)
+    progress.score = (progress.score + score) / 2  # simple average (or customize)
+    if progress.score >= 80:
+        progress.mastery_level = "MASTERED"
+    progress.save()
 
-    for tid, (num_correct, num_total) in topic_accuracy.items():
-        accuracy = num_correct / num_total
-        progress, created = UserTopicProgress.objects.get_or_create(
-            user=request.user,
-            topic_id=tid,
-            defaults={"score": accuracy * 100, "mastery_level": "LEARNING"},
-        )
-
-        if not created:
-            if tid == quiz.topic.id:
-                new_score = (1 - alpha) * progress.score + alpha * (accuracy * 100)
-            else:
-                new_score = (1 - beta) * progress.score + beta * (accuracy * 100)
-
-            progress.score = new_score
-
-            if progress.score >= 80:
-                progress.mastery_level = "MASTERED"
-            elif progress.score > 0:
-                progress.mastery_level = "LEARNING"
-            else:
-                progress.mastery_level = "NOT_STARTED"
-
-            progress.save()
+    request.session["last_score"] = score
 
     return JsonResponse({
         "message": "Quiz submitted successfully",
-        "score": quiz.score,
-        "total_correct": total_correct
+        "score": score,
+        "mastery_level": progress.mastery_level,
     })
+
+@login_required
+def results(request):
+    score = request.session.get("last_score", None)
+    return render(request, "quiz/results.html", {
+        "score": score
+    })
+
+@login_required
+def completed(request):
+    return render(request, "quiz/completed.html")

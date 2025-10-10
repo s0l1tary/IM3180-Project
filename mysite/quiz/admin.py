@@ -16,12 +16,18 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(UserTopicProgress)
 class UserTopicProgressAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "topic", "score", "last_updated")
-    list_filter = ("topic", "user")
+    list_display = ("id", "user", "topic", "score", "mastery_level", "last_updated")
+    list_filter = ("topic", "user", "mastery_level")
     search_fields = ("user__username", "topic__name")
 
 @admin.register(Option)
 class OptionAdmin(admin.ModelAdmin):
     list_display = ("question", "text", "is_correct")
 
-admin.register(QuizSession)
+@admin.register(QuizSession)
+class QuizSessionAdmin(admin.ModelAdmin):
+    list_display = ("id", "topic", "quiz_type", "score")
+
+@admin.register(QuizQuestionRecord)
+class QuizSessionAdmin(admin.ModelAdmin):
+    list_display = ("id", "question", "chosen_option", "is_correct")
