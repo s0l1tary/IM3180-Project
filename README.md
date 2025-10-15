@@ -57,6 +57,10 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+- To load json file to database
+```
+python manage.py loaddata quiz/fixtures/initial_data.json
+```
 
 ## Adding more webpages
 1) Store html pages in main/templates
