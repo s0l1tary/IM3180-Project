@@ -117,4 +117,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     return cookieValue;
   }
+
+  initMathRendering();
 });
+
+// New function for math rendering
+// function initMathRendering() {
+//     if (typeof renderMathInElement !== 'undefined') {
+//         renderMathInElement(document.body, {
+//             delimiters: [
+//                 {left: '\\\\(', right: '\\\\)', display: false},
+//                 {left: '\\\\[', right: '\\\\]', display: true}
+//             ]
+//         });
+//     }
+// }

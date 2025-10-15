@@ -24,12 +24,6 @@ class Question(models.Model):
     difficulty = models.CharField(max_length=10, choices=DIFFICULTIES, default="EASY")
     explanation = models.TextField(blank=True)
 
-    def clean(self):
-        options = self.option_set.all()
-        correct_count = sum(o.is_correct for o in options)
-        if correct_count != 1:
-            raise ValidationError("Each question must have exactly one correct option.")
-
     def __str__(self):
         return f"[{self.topic.name}/{self.difficulty}] {self.text[:40]}"
 
