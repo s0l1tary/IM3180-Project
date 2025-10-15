@@ -5,6 +5,7 @@ from .models import *
 import random
 import json
 from django.utils import timezone
+from .utils import calculate_quiz_score, update_user_progress
 
 @login_required
 def take_quiz(request):
@@ -26,22 +27,43 @@ def take_quiz(request):
         progress = user_progress.filter(mastery_level="LEARNING").first()
 
         if not progress:
-            # If all mastered, unlock the next topic
+            # If all prevous topics are mastered, unlock the next topic
             last_progress = user_progress.order_by("-topic__id").first()
             next_topic = Topic.objects.filter(id__gt=last_progress.topic.id).order_by("id").first()
 
+            # If user mastered all topics, show completed page
             if not next_topic:
                 return render(request, "quiz/completed.html")
 
             progress = UserTopicProgress.objects.create(user=user, topic=next_topic, score=0.0, mastery_level="LEARNING")
+            topic = progress.topic
 
-        topic = progress.topic
+            # Create placement quiz
+            quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="PLACEMENT")
+        else:
+            topic = progress.topic
 
-        # Create a new quiz session
-        quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")
+            # Create a new quiz session
+            quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")
 
-    # Get 10 random questions from the chosen topic
-    questions = list(Question.objects.filter(topic=topic).order_by("?")[:10])
+    # Get 10 questions based on the quiz type and user's score
+    if  quiz.quiz_type == "PLACEMENT":
+        easy_qs = list(Question.objects.filter(topic=topic, difficulty="EASY").order_by("?")[:5])
+        hard_qs = list(Question.objects.filter(topic=topic, difficulty="HARD").order_by("?")[:5])
+        questions = easy_qs + hard_qs
+    else:
+        score = progress.score
+        if score < 50:
+            num_easy, num_hard = 7, 3
+        elif score < 80:
+            num_easy, num_hard = 5, 5
+        else:
+            num_easy, num_hard = 3, 7
+
+        easy_qs = list(Question.objects.filter(topic=topic, difficulty="EASY").order_by("?")[:num_easy])
+        hard_qs = list(Question.objects.filter(topic=topic, difficulty="HARD").order_by("?")[:num_hard])
+        questions = easy_qs + hard_qs
+
     random.shuffle(questions)  # mix review and current
 
     # Serialize questions for JSON
@@ -57,7 +79,7 @@ def take_quiz(request):
                 "text": opt.text,
                 "is_correct": opt.is_correct,
             }
-            for opt in q.options.all()  # ← fetch options through related_name
+            for opt in random.sample(list(q.options.all()), k=q.options.count())  # shuffle options
         ],
     }
     for q in questions
@@ -65,7 +87,8 @@ def take_quiz(request):
 
     # Render quiz page
     return render(request, "quiz/quiz.html", {
-    "quiz": quiz,
+    "quiz_id": quiz.id,
+    "quiz_type": quiz.quiz_type,
     "questions": questions_data
     })
 
@@ -84,8 +107,7 @@ def submit_quiz(request, quiz_id):
     data = json.loads(request.body)
     answers = data.get("answers", {})
 
-    total_questions = len(answers)
-    correct_count = 0
+    question_records = []
 
     # Process each question
     for qid, selected_opt_id in answers.items():
@@ -95,9 +117,6 @@ def submit_quiz(request, quiz_id):
             is_correct = chosen_option.is_correct
         except (Question.DoesNotExist, Option.DoesNotExist):
             continue
-
-        if is_correct:
-            correct_count += 1
 
         # Record each question attempt
         QuizQuestionRecord.objects.create(
@@ -109,25 +128,31 @@ def submit_quiz(request, quiz_id):
             topic=question.topic,
         )
 
+        question_records.append({
+            "difficulty": question.difficulty,
+            "is_correct": is_correct
+        })
+
     # Calculate score
-    score = (correct_count / total_questions) * 100 if total_questions > 0 else 0
+    score = calculate_quiz_score(question_records)
     quiz.score = score
     quiz.completed_at = timezone.now()
     quiz.save()
 
     # Update UserTopicProgress
-    progress, _ = UserTopicProgress.objects.get_or_create(user=user, topic=quiz.topic)
-    progress.score = (progress.score + score) / 2  # simple average (or customize)
-    if progress.score >= 80:
-        progress.mastery_level = "MASTERED"
-    progress.save()
+    user_progress = UserTopicProgress.objects.get(user=user, topic=quiz.topic)
+    if quiz.quiz_type == "PLACEMENT":
+        user_progress.score = score
+        user_progress.save()
+    else:
+        update_user_progress(user_progress, score)
 
     request.session["last_score"] = score
 
     return JsonResponse({
         "message": "Quiz submitted successfully",
         "score": score,
-        "mastery_level": progress.mastery_level,
+        "mastery_level": user_progress.mastery_level,
     })
 
 @login_required

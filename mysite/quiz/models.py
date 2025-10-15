@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 
 # ------------------------------
 # Topic & Question Bank
@@ -23,6 +23,12 @@ class Question(models.Model):
     text = models.TextField()
     difficulty = models.CharField(max_length=10, choices=DIFFICULTIES, default="EASY")
     explanation = models.TextField(blank=True)
+
+    def clean(self):
+        options = self.option_set.all()
+        correct_count = sum(o.is_correct for o in options)
+        if correct_count != 1:
+            raise ValidationError("Each question must have exactly one correct option.")
 
     def __str__(self):
         return f"[{self.topic.name}/{self.difficulty}] {self.text[:40]}"
@@ -48,7 +54,7 @@ class UserTopicProgress(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="topic_progress")
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name="user_progress")
-    score = models.FloatField(default=0.0)  # 0–100 scale (or 0–1 if you prefer)
+    score = models.FloatField(default=0.0)  # 0–100 scale
     mastery_level = models.CharField(max_length=20, choices=MASTERY_LEVELS, default="LEARNING")
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -83,7 +89,7 @@ class QuizSession(models.Model):
 
 class QuizQuestionRecord(models.Model):
     quiz_session = models.ForeignKey(QuizSession, on_delete=models.CASCADE, related_name="question_records")
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE,)
     chosen_option = models.ForeignKey(Option, on_delete=models.SET_NULL, null=True, blank=True)
     is_correct = models.BooleanField(default=False)
 
