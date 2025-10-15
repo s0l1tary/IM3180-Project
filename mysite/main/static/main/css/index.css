@@ -87,3 +87,54 @@ p {
 h1 {
     margin: 0px;
 }
+
+
+/* for navbar */
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #3498db !important;
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .dropdown-item:focus, .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #3498db;
+        }
+        .btn-outline-primary {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        .btn-outline-primary:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .navbar-toggler {
+            border: none;
+            padding: 4px 8px;
+        }
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        .welcome-text {
+            color: #2c3e50;
+        }
