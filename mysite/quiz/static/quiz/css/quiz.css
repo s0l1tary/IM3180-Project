@@ -5,21 +5,6 @@ body {
   padding: 20px;
 }
 
-/* Difficulty badge styling */
-  #difficulty-tag {
-    position: absolute;
-    top: 20px;
-    left: 32px;
-    background: #f44336;
-    color: #fff;
-    padding: 6px 18px;
-    font-weight: bold;
-    font-size: 0.95rem;
-    border-radius: 14px;
-    letter-spacing: 1.2px;
-    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
-    z-index: 25;
-  }
 
   /* Progress bar margin */
   .progress-bar-container {
@@ -154,13 +139,13 @@ body {
 
 
 /* Different colors based on difficulty */
-.badge.easy {
+.badge.hard {
   background-color: #28a745; /* green */
 }
 .badge.medium {
   background-color: #ffc107; /* yellow */
   color: black;
 }
-.badge.hard {
+.badge.easy {
   background-color: #dc3545; /* red */
 }
