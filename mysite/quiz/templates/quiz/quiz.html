@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}">
+
 {% endblock %}
 
 {% block title %}
@@ -10,48 +11,38 @@ Quiz · DeepLearn
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid vh-100 d-flex flex-column justify-content-between">
-  <!-- Progress Bar -->
+<div class="container-fluid vh-100 body-gradient d-flex flex-column justify-content-between">
   <div class="progress-bar-container">
     <div id="progress-bar"></div>
   </div>
-  
-  <!-- Quiz area -->
-  <div class="row flex-grow-1">
-    <!-- Left: Question -->
-    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center border-end position-relative">
-      <!-- Difficulty Tag -->
-      <div id="difficulty-tag" 
-          class="position-absolute top-0 start-0 m-4 badge rounded-pill bg-secondary px-3 py-2 fs-6">
-      </div>
 
-      <!-- Question text -->
-      <h3 id="question-text" class="text-center px-4"></h3>
+  <div class="row flex-grow-1">
+    <div class="col-md-6 d-flex border-end position-relative">
+      <div id="difficulty-tag" class="badge">EASY</div>
+      <div class="question-box" id="question-text"></div>
     </div>
 
-    <!-- Right: Options -->
-    <div class="col-md-6 d-flex flex-column align-items-start justify-content-center px-5">
+    <div class="col-md-6 d-flex flex-column px-5" style="position: relative;">
       {% csrf_token %}
       <input type="hidden" id="quiz-id" value="{{ quiz_id }}">
-      <div id="options-container" class="d-grid gap-2"></div>
+          <div id="options-container">
+      <div class="option-btn">Option 1</div>
+      <div class="option-btn">Option 2</div>
+      <div class="option-btn">Option 3</div>
+      <div class="option-btn">Option 4</div>
     </div>
   </div>
 
-  <!-- Bottom: Next button -->
-  <div class="text-center py-3 border-top">
-    <button id="next-btn" class="btn btn-primary btn-lg" disabled>Next</button>
+  <div class="next-btn-footer">
+    <button id="next-btn" disabled>Next</button>
   </div>
 </div>
 
-<!-- JSON data for JS -->
 {{ questions|json_script:"questions-data" }}
 
-<!-- Pass submit url -->
 <script>
   const submitUrl = "{% url 'submit_quiz' quiz_id %}";
   const resultsUrl = "{% url 'results' %}";
 </script>
-
-<!-- Link external JS -->
 <script src="{% static 'quiz/js/quiz.js' %}"></script>
 {% endblock %}

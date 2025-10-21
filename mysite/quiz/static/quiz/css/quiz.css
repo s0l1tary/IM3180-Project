@@ -1,25 +1,72 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #c9e3fd !important;
   min-height: 100vh;
   padding: 20px;
 }
 
-/* Progress Bar styling */
+/* Difficulty badge styling */
+  #difficulty-tag {
+    position: absolute;
+    top: 20px;
+    left: 32px;
+    background: #f44336;
+    color: #fff;
+    padding: 6px 18px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border-radius: 14px;
+    letter-spacing: 1.2px;
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+    z-index: 25;
+  }
+
+  /* Progress bar margin */
+  .progress-bar-container {
+    margin-top: 32px;
+  }
+
+    /* Progress bar container track */
 .progress-bar-container {
-  width: 100%;
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 5px;
+  background-color: #bfd9fb; /* lighter background for track */
+  height: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 20px;
 }
 
+/* Progress bar fill */
 #progress-bar {
-  height: 100%;
-  width: 0%;
-  background-color: #afa6e9; /* green */
+  width: 0; /* this is dynamically updated */
+  height: 8px;
+  background-color: #3d507a; /* your requested dark blue fill */
+  border-radius: 4px;
   transition: width 0.3s ease;
+}
+
+/* Left column with fixed question box */
+.col-md-6.d-flex.border-end {
+  padding: 60px 48px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: transparent;
+}
+
+  /* Question box - fixed size, white background */
+.question-box {
+  background-color: #fff !important;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.12);
+  border-radius: 22px;
+  width: 520px;
+  height: 320px;
+  padding: 48px 38px;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  line-height: 1.35;
+  overflow-y: auto;
 }
 
 /* Make the right column take full height */
@@ -38,12 +85,12 @@ body {
   width: 100%;
   padding: 1.25rem 1.5rem;
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   border-radius: 0.75rem;
   border: 2px solid transparent;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.45);
+  color: #91959c;
   transition: all 0.25s ease;
   backdrop-filter: blur(8px);
 }
@@ -64,6 +111,45 @@ body {
   background-color: #dc3545 !important;
   color: #fff;
 }
+
+
+/* Next button footer */
+.next-btn-footer {
+  width: 100%;
+  border-top: 2px solid #bfd9fb;
+  padding: 32px 0 36px 0;
+  text-align: center;
+  z-index: 50;
+}
+
+  /* Next button style */
+#next-btn {
+  background-color: #3d507a;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  width: 180px;
+  height: 60px;
+  box-shadow: 0 6px 20px rgba(17, 45, 106, 0.5);
+  margin: 0 auto;
+  transition: background 0.22s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 60;
+}
+
+#next-btn:disabled {
+  background: #a9b8d9;
+  color: #7983a7;
+  cursor: not-allowed;
+}
+
+#next-btn:not(:disabled):hover {
+  background-color: #28344f;
+}
+
 
 /* Different colors based on difficulty */
 .badge.easy {
