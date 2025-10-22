@@ -200,7 +200,7 @@
   "fields": {
     "question": 14,
     "text": "Continuous-time and continuous-value",
-    "is_correct": false
+    "is_correct": true
   }
 },
 {
@@ -677,7 +677,7 @@
   "fields": {
     "question": 27,
     "text": "None of the above",
-    "is_correct": false
+    "is_correct": true
   }
 },
 {
