@@ -18,18 +18,13 @@ Quiz · DeepLearn
 
   <div class="row flex-grow-1">
     <div class="col-md-6 d-flex border-end position-relative">
-      <div id="difficulty-tag" class="badge">EASY</div>
+      <div id="difficulty-tag" class="position-absolute top-0 start-0 m-4 badge rounded-pill bg-secondary px-3 py-2 fs-6">
+      </div>
       <div class="question-box" id="question-text"></div>
     </div>
 
     <div class="col-md-6 d-flex flex-column px-5" style="position: relative;">
-      {% csrf_token %}
-      <input type="hidden" id="quiz-id" value="{{ quiz_id }}">
-          <div id="options-container">
-      <div class="option-btn">Option 1</div>
-      <div class="option-btn">Option 2</div>
-      <div class="option-btn">Option 3</div>
-      <div class="option-btn">Option 4</div>
+      <div id="options-container"></div>
     </div>
   </div>
 

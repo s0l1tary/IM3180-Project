@@ -19,9 +19,13 @@ def calculate_quiz_score(question_records):
     normalized_score = max(0, min(100, (earned_points/total_points) * 100))
     return round(normalized_score, 1)
 
-def update_user_progress(user_progress, quiz_score):
-    old_score = user_progress.score
-    updated_score = (0.4 * old_score) + (0.6 * quiz_score)
+def update_user_progress(user_progress, quiz_type, quiz_score):
+    if quiz_type == 'PLACEMENT':
+        updated_score = quiz_score
+    else:
+        old_score = user_progress.score
+        updated_score = (0.4 * old_score) + (0.6 * quiz_score)
+    
     user_progress.score = round(updated_score, 1)
 
     if updated_score >= 85:

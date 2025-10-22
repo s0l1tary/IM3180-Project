@@ -33,10 +33,10 @@ class OptionAdmin(admin.ModelAdmin):
 
 @admin.register(QuizSession)
 class QuizSessionAdmin(admin.ModelAdmin):
-    list_display = ("id", "topic", "quiz_type", "score")
+    list_display = ("id", "user", "topic", "quiz_type", "score")
 
 @admin.register(QuizQuestionRecord)
-class QuizSessionAdmin(admin.ModelAdmin):
+class QuizQuestionRecordAdmin(admin.ModelAdmin):
     list_display = ("id", "question", "get_question_difficulty", "chosen_option", "is_correct")
 
     def get_question_difficulty(self, obj):

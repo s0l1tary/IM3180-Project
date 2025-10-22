@@ -83,7 +83,7 @@ def take_quiz(request):
         ],
     }
     for q in questions
-]
+    ]
 
     # Render quiz page
     return render(request, "quiz/quiz.html", {
@@ -141,11 +141,7 @@ def submit_quiz(request, quiz_id):
 
     # Update UserTopicProgress
     user_progress = UserTopicProgress.objects.get(user=user, topic=quiz.topic)
-    if quiz.quiz_type == "PLACEMENT":
-        user_progress.score = score
-        user_progress.save()
-    else:
-        update_user_progress(user_progress, score)
+    update_user_progress(user_progress, quiz.quiz_type, score)
 
     request.session["last_score"] = score
 

@@ -154,13 +154,9 @@ body {
 
 
 /* Different colors based on difficulty */
-.badge.easy {
+.easy {
   background-color: #28a745; /* green */
 }
-.badge.medium {
-  background-color: #ffc107; /* yellow */
-  color: black;
-}
-.badge.hard {
-  background-color: #dc3545; /* red */
+.hard {
+  background-color: red; /* red */
 }
