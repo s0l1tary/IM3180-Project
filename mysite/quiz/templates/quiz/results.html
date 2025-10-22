@@ -3,19 +3,109 @@
 
 {% block title %}Results · DeepLearn{% endblock %}
 
-{% block content %}s
-  <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <h1 class="h3 mb-0">Your Results</h1>
+{% block content %}
+<!-- ✅ Linked CSS file -->
+<link rel="stylesheet" href="{% static 'css/results.css' %}">
+
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-8">
+      <!-- Results Header -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 mb-0">
+          Quiz <span class="badge bg-secondary ms-2">Basic</span>
+        </h1>
+      </div>
+
+      <!-- Topic and Score Card -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Topic 1: LTI Systems (Basic)</h5>
+          <p class="card-text mb-2">
+            Score: <span class="fw-bold">{{ score }}</span> out of {{ total }}
+          </p>
+
+          <!-- Quiz Question Example -->
+          <div class="mb-3">
+            <div><strong>Q1.</strong> {{ question_text }}</div>
+            <ul class="list-group mt-2">
+              {% for choice in choices %}
+                <li
+                  class="list-group-item
+                    {% if choice.is_correct %}list-group-item-success
+                    {% elif choice.is_selected %}list-group-item-danger
+                    {% endif %}">
+                  {{ choice.text }}
+                  {% if choice.is_selected %}
+                    <span class="badge rounded-pill bg-danger ms-2">Your answer</span>
+                  {% endif %}
+                  {% if choice.is_correct %}
+                    <span class="badge rounded-pill bg-success ms-2">Correct</span>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+            <div class="mt-2">
+              <small class="text-muted">Explanation: {{ explanation }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div>
+        <a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
+        <a class="btn btn-outline-secondary" href="{% url 'take_quiz' %}">Next</a>
+      </div>
     </div>
 
-    <div class="alert alert-info">
-      Score: <strong>{{ score }}</strong>
-    </div>
+    <!-- Sidebar: Badge and Progress -->
+    <div class="col-lg-4">
+      <div class="card mb-4 text-center">
+        <div class="card-body">
+          <img src="{% static 'images/medal.png' %}" alt="Badge" style="width: 64px;" class="mb-2" />
+          <div class="h5 mb-1">
+            {{ correct_count }} out of {{ total_count }} correct
+          </div>
 
-    <div>
-      <a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
-      <a class="btn btn-outline-secondary" href="{% url 'take_quiz' %}">Next</a>
+          <!-- ✅ Progress bar with dynamic width -->
+          <div class="progress" style="height: 8px;">
+            <div
+              class="progress-bar bg-success"
+              data-percent="{{ percent|default:0|floatformat:0 }}"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title mb-3">Progress of Topics:</h6>
+          <ul class="list-group">
+            {% for topic in topics %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ topic.name }}
+                <span class="{% if topic.status == 'Competent' %}text-success{% else %}text-warning{% endif %}">
+                  {{ topic.status }}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- JavaScript to dynamically apply progress bar width -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const bar = document.querySelector(".progress-bar");
+    if (bar) {
+      const percent = bar.getAttribute("data-percent");
+      bar.style.width = percent + "%";
+    }
+  });
+</script>
 {% endblock %}
+

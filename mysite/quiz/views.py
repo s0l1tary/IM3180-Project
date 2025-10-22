@@ -47,7 +47,7 @@ def take_quiz(request):
             quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")
 
     # Get 10 questions based on the quiz type and user's score
-    if  quiz.quiz_type == "PLACEMENT":
+    if quiz.quiz_type == "PLACEMENT":
         easy_qs = list(Question.objects.filter(topic=topic, difficulty="EASY").order_by("?")[:5])
         hard_qs = list(Question.objects.filter(topic=topic, difficulty="HARD").order_by("?")[:5])
         questions = easy_qs + hard_qs
@@ -68,28 +68,28 @@ def take_quiz(request):
 
     # Serialize questions for JSON
     questions_data = [
-    {
-        "id": q.id,
-        "text": q.text,
-        "difficulty": q.difficulty,
-        "explanation": q.explanation,
-        "options": [
-            {
-                "id": opt.id,
-                "text": opt.text,
-                "is_correct": opt.is_correct,
-            }
-            for opt in random.sample(list(q.options.all()), k=q.options.count())  # shuffle options
-        ],
-    }
-    for q in questions
-]
+        {
+            "id": q.id,
+            "text": q.text,
+            "difficulty": q.difficulty,
+            "explanation": q.explanation,
+            "options": [
+                {
+                    "id": opt.id,
+                    "text": opt.text,
+                    "is_correct": opt.is_correct,
+                }
+                for opt in random.sample(list(q.options.all()), k=q.options.count())  # shuffle options
+            ],
+        }
+        for q in questions
+    ]
 
     # Render quiz page
     return render(request, "quiz/quiz.html", {
-    "quiz_id": quiz.id,
-    "quiz_type": quiz.quiz_type,
-    "questions": questions_data
+        "quiz_id": quiz.id,
+        "quiz_type": quiz.quiz_type,
+        "questions": questions_data
     })
 
 
@@ -155,12 +155,33 @@ def submit_quiz(request, quiz_id):
         "mastery_level": user_progress.mastery_level,
     })
 
+
+# ✅ Edited results() function only
 @login_required
 def results(request):
-    score = request.session.get("last_score", None)
+    score = request.session.get("last_score", 0)
+
+    # Temporary demo values (replace with real data later)
+    total = 100
+    correct_count = int(score / 10)     # e.g. each correct = 10 pts
+    total_count = 10
+    percent = round(score, 0)
+
+    topics = [
+        {"name": "LTI Systems", "status": "Competent"},
+        {"name": "Fourier Series", "status": "Learning"},
+        {"name": "Convolution", "status": "Learning"},
+    ]
+
     return render(request, "quiz/results.html", {
-        "score": score
+        "score": score,
+        "total": total,
+        "correct_count": correct_count,
+        "total_count": total_count,
+        "percent": percent,
+        "topics": topics,
     })
+
 
 @login_required
 def completed(request):
