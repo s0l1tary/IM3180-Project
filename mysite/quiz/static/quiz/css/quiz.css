@@ -140,8 +140,8 @@ body {
 
 /* Different colors based on difficulty */
 .easy {
-  background-color: #28a745; /* green */
+  background-color: green;
 }
 .hard {
-  background-color: red; /* red */
+  background-color: red;
 }

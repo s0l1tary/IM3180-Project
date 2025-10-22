@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     questionText.textContent = questions[index].text;
 
     // Load difficulty
-    difficultyTag.textContent = questions[index].difficulty
+    difficultyTag.textContent = questions[index].difficulty;
     difficultyTag.className = `position-absolute top-0 start-0 m-4 badge rounded-pill px-3 py-2 fs-6 ${questions[index].difficulty.toLowerCase()}`;
 
     // Rebuild form options
