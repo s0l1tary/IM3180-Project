@@ -57,6 +57,15 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+- To dump data into json file
+```
+python manage.py dumpdata quiz.Topic quiz.Question quiz.Option --indent 2 --output=quiz/fixtures/initial_data.json
+```
+
+- To load json file to database
+```
+python manage.py loaddata quiz/fixtures/initial_data.json
+```
 
 ## Adding more webpages
 1) Store html pages in main/templates

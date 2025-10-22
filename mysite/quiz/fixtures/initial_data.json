@@ -1,0 +1,719 @@
+[
+{
+  "model": "quiz.topic",
+  "pk": 2,
+  "fields": {
+    "name": "Classification of Signals",
+    "slug": "ClassificationofSignals",
+    "description": "signals classification"
+  }
+},
+{
+  "model": "quiz.topic",
+  "pk": 3,
+  "fields": {
+    "name": "Operations of Signals",
+    "slug": "OperationsofSignals",
+    "description": "Operations of Signals"
+  }
+},
+{
+  "model": "quiz.topic",
+  "pk": 4,
+  "fields": {
+    "name": "LTI Systems & Properties",
+    "slug": "LTISystemsandProperties",
+    "description": "LTI Systems & Properties"
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 14,
+  "fields": {
+    "topic": 2,
+    "text": "Determine the classification of x(t) = 2t",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 15,
+  "fields": {
+    "topic": 2,
+    "text": "Determine the classification of the signal x[n] = (-1)^n",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 16,
+  "fields": {
+    "topic": 2,
+    "text": "Determine the classification of the signal x(t) = -2e ^-2|t|",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 17,
+  "fields": {
+    "topic": 2,
+    "text": "Determine the energy level of the signal x(t) = -2sin(2 pi t).",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 18,
+  "fields": {
+    "topic": 2,
+    "text": "Determine the power level of the signal x(t) = -3",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 19,
+  "fields": {
+    "topic": 3,
+    "text": "Given a signal x(t) = -2rect(-t), what is the energy of x(t)?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 20,
+  "fields": {
+    "topic": 3,
+    "text": "Assuming that the signal x(t) is an energy-type signal and its energy is E_x = 4, what is the energy of signal 0.5x(-t)?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 21,
+  "fields": {
+    "topic": 3,
+    "text": "Given a signal x(t) = -2e^{-2t}, which of the following is x(t)delta(t)?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 22,
+  "fields": {
+    "topic": 3,
+    "text": "A signal x(t) is amplified by a factor of 2 and shifted to the left by 2 units, which of the following is the expression of the resultant signal?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 23,
+  "fields": {
+    "topic": 3,
+    "text": "Determine the classification of the signal \\\\( x[n] = \\sum_{k=-\\infty}^{\\infty} 2\\delta[n - k] \\\\).",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 24,
+  "fields": {
+    "topic": 4,
+    "text": "Given a system whose input-output relation is described by y(t) = -5x(t - 5), which of the\r\nfollowing is true?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 25,
+  "fields": {
+    "topic": 4,
+    "text": "Given a system whose input-output relation is described by y[n] = x[n - 1] + x[n] + x[n + 1],\r\nwhich of the following statements is true?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 26,
+  "fields": {
+    "topic": 4,
+    "text": "Assuming that h(t) = 2rect(t/2), determine the peak value of the waveform y(t) = h(t) * h(t).",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 27,
+  "fields": {
+    "topic": 4,
+    "text": "Given x[n] = 2rect[n/2] and y[n] = x[n] * x[n], what is the peak value of y[n]?",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.question",
+  "pk": 28,
+  "fields": {
+    "topic": 4,
+    "text": "Assuming that h(t) = 2rect(t/4), determine the duration of the waveform y(t) = h(t) * h(2t)",
+    "difficulty": "EASY",
+    "explanation": ""
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 53,
+  "fields": {
+    "question": 14,
+    "text": "Random",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 54,
+  "fields": {
+    "question": 14,
+    "text": "Continuous-time and discrete-value",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 55,
+  "fields": {
+    "question": 14,
+    "text": "Continuous-time and continuous-value",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 56,
+  "fields": {
+    "question": 14,
+    "text": "Discrete-time and discrete-value",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 57,
+  "fields": {
+    "question": 15,
+    "text": "Periodic",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 58,
+  "fields": {
+    "question": 15,
+    "text": "Energy-type",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 59,
+  "fields": {
+    "question": 15,
+    "text": "Odd",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 60,
+  "fields": {
+    "question": 15,
+    "text": "Random",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 61,
+  "fields": {
+    "question": 16,
+    "text": "Random",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 62,
+  "fields": {
+    "question": 16,
+    "text": "Discrete-time",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 63,
+  "fields": {
+    "question": 16,
+    "text": "Odd",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 64,
+  "fields": {
+    "question": 16,
+    "text": "Energy-type",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 65,
+  "fields": {
+    "question": 17,
+    "text": "-2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 66,
+  "fields": {
+    "question": 17,
+    "text": "2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 67,
+  "fields": {
+    "question": 17,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 68,
+  "fields": {
+    "question": 17,
+    "text": "Infinite",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 69,
+  "fields": {
+    "question": 18,
+    "text": "-3",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 70,
+  "fields": {
+    "question": 18,
+    "text": "3",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 71,
+  "fields": {
+    "question": 18,
+    "text": "-9",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 72,
+  "fields": {
+    "question": 18,
+    "text": "9",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 73,
+  "fields": {
+    "question": 19,
+    "text": "-2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 74,
+  "fields": {
+    "question": 19,
+    "text": "2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 75,
+  "fields": {
+    "question": 19,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 76,
+  "fields": {
+    "question": 19,
+    "text": "-4",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 77,
+  "fields": {
+    "question": 20,
+    "text": "0.5",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 78,
+  "fields": {
+    "question": 20,
+    "text": "1",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 79,
+  "fields": {
+    "question": 20,
+    "text": "2",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 80,
+  "fields": {
+    "question": 20,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 81,
+  "fields": {
+    "question": 21,
+    "text": "1",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 82,
+  "fields": {
+    "question": 21,
+    "text": "e^t",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 83,
+  "fields": {
+    "question": 21,
+    "text": "2delta(t)",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 84,
+  "fields": {
+    "question": 21,
+    "text": "-2delta(t)",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 85,
+  "fields": {
+    "question": 22,
+    "text": "2x(t/2)",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 86,
+  "fields": {
+    "question": 22,
+    "text": "2x(-2t)",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 87,
+  "fields": {
+    "question": 22,
+    "text": "2x(t + 2)",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 88,
+  "fields": {
+    "question": 22,
+    "text": "2x(t - 2)",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 89,
+  "fields": {
+    "question": 23,
+    "text": "Energy-type",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 90,
+  "fields": {
+    "question": 23,
+    "text": "Odd",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 91,
+  "fields": {
+    "question": 23,
+    "text": "Even",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 92,
+  "fields": {
+    "question": 23,
+    "text": "Continuous-value",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 93,
+  "fields": {
+    "question": 24,
+    "text": "It is a memoryless system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 94,
+  "fields": {
+    "question": 24,
+    "text": "It is a nonlinear system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 95,
+  "fields": {
+    "question": 24,
+    "text": "It is a system with memory",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 96,
+  "fields": {
+    "question": 24,
+    "text": "It is a noncausal system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 97,
+  "fields": {
+    "question": 25,
+    "text": "It is a noncausal system",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 98,
+  "fields": {
+    "question": 25,
+    "text": "It is causal system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 99,
+  "fields": {
+    "question": 25,
+    "text": "It is a nonlinear system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 100,
+  "fields": {
+    "question": 25,
+    "text": "It is an unstable system",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 101,
+  "fields": {
+    "question": 26,
+    "text": "2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 102,
+  "fields": {
+    "question": 26,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 103,
+  "fields": {
+    "question": 26,
+    "text": "6",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 104,
+  "fields": {
+    "question": 26,
+    "text": "8",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 105,
+  "fields": {
+    "question": 27,
+    "text": "0",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 106,
+  "fields": {
+    "question": 27,
+    "text": "2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 107,
+  "fields": {
+    "question": 27,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 108,
+  "fields": {
+    "question": 27,
+    "text": "None of the above",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 109,
+  "fields": {
+    "question": 28,
+    "text": "2",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 110,
+  "fields": {
+    "question": 28,
+    "text": "4",
+    "is_correct": false
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 111,
+  "fields": {
+    "question": 28,
+    "text": "6",
+    "is_correct": true
+  }
+},
+{
+  "model": "quiz.option",
+  "pk": 112,
+  "fields": {
+    "question": 28,
+    "text": "8",
+    "is_correct": false
+  }
+}
+]
