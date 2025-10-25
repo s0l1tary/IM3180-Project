@@ -24,4 +24,5 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('register/', v.signup, name='signup'),
     path('', include('django.contrib.auth.urls')),
+    
 ]
