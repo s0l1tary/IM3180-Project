@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'register',
     'quiz',
+    'content',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
@@ -133,3 +134,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'  
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
