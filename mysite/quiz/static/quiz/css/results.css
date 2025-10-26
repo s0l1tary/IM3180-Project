@@ -1,0 +1,58 @@
+    .quiz-results {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 0 auto 1rem;
+        border: 8px solid;
+    }
+    
+    .score-circle.passed {
+        border-color: #28a745;
+        color: #28a745;
+    }
+    
+    .score-circle.failed {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+    
+    .stat-card {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+    
+    .streak-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    
+    .streak-icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .streak-value {
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+    }

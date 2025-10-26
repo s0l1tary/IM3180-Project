@@ -23,7 +23,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(UserTopicProgress)
 class UserTopicProgressAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "topic", "score", "mastery_level", "last_updated")
+    list_display = ("id", "user", "topic", "score", "mastery_level", "fail_streak", "requires_review", "pass_streak", "high_score_streak", "last_updated")
     list_filter = ("topic", "user", "mastery_level")
     search_fields = ("user__username", "topic__name")
 

@@ -3,19 +3,131 @@
 
 {% block title %}Results · DeepLearn{% endblock %}
 
-{% block content %}s
-  <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <h1 class="h3 mb-0">Your Results</h1>
-    </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'quiz/css/results.css' %}">
+{% endblock %}
 
-    <div class="alert alert-info">
-      Score: <strong>{{ score }}</strong>
+{% block content %}
+<div class="quiz-results">
+    
+    <!-- Page Title -->
+    <h1 class="text-center mb-4">Quiz Results</h1>
+    
+    <!-- Score Display Card -->
+    <div class="card mb-4">
+        <div class="card-body text-center py-5">
+            <div class="score-circle {% if passed %}passed{% else %}failed{% endif %}">
+                {{ quiz_session.score|floatformat:0 }}%
+            </div>
+            {% if passed %}
+                <h3 class="text-success mb-2">
+                    <i class="fas fa-check-circle"></i> Passed!
+                </h3>
+            {% else %}
+                <h3 class="text-danger mb-2">
+                    <i class="fas fa-times-circle"></i> Did Not Pass
+                </h3>
+            {% endif %}
+            <p class="text-muted">Pass threshold: 50%</p>
+        </div>
     </div>
-
-    <div>
-      <a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
-      <a class="btn btn-outline-secondary" href="{% url 'take_quiz' %}">Next</a>
+    
+    <!-- Streaks Display -->
+    {% if passed and progress %}
+        {% if progress.pass_streak > 0 or progress.high_score_streak > 0 %}
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <h4 class="card-title">🔥 Active Streaks</h4>
+                <div class="row mt-3">
+                    {% if progress.pass_streak > 0 %}
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="streak-card">
+                            <span class="streak-icon">🔥</span>
+                            <span class="d-block mb-2">Pass Streak</span>
+                            <span class="streak-value">{{ progress.pass_streak }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if progress.high_score_streak > 0 %}
+                    <div class="col-md-6">
+                        <div class="streak-card">
+                            <span class="streak-icon">⭐</span>
+                            <span class="d-block mb-2">High Score Streak</span>
+                            <span class="streak-value">{{ progress.high_score_streak }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+    
+    <!-- Warning Messages -->
+    {% if fail_streak > 0 %}
+    <div class="card border-warning mb-4">
+        <div class="card-body">
+            <h5 class="text-warning">
+                <i class="fas fa-exclamation-triangle"></i> 
+                Consecutive Failures: {{ fail_streak }}
+            </h5>
+            {% if requires_review %}
+                <div class="alert alert-danger mt-3 mb-0">
+                    <strong>Quiz Access Locked:</strong> You must review the course content before taking another quiz.
+                </div>
+            {% elif fail_streak == 1 %}
+                <div class="alert alert-info mt-3 mb-0">
+                    One more failure will require you to review the content.
+                </div>
+            {% endif %}
+        </div>
     </div>
-  </div>
+    {% endif %}
+    
+    <!-- Question Breakdown -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="fas fa-chart-bar"></i> Question Breakdown
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="stat-card border rounded">
+                        <p class="text-muted mb-2">Easy Questions</p>
+                        <div class="stat-value">{{ easy_correct }}/{{ easy_total }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-card border rounded">
+                        <p class="text-muted mb-2">Hard Questions</p>
+                        <div class="stat-value">{{ hard_correct }}/{{ hard_total }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="card">
+        <div class="card-body text-center py-4">
+            {% if requires_review %}
+                <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
+                    <i class="fas fa-book-open"></i> Review Course Content
+                </a>
+                <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
+            {% else %}
+                <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2">
+                    <i class="fas fa-arrow-right"></i> Continue to Next Quiz
+                </a>
+                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
 {% endblock %}
