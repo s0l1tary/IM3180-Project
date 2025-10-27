@@ -164,6 +164,9 @@
                 <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
                     <i class="fas fa-book-open"></i> Review Course Content
                 </a>
+                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </a>
                 <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
             {% else %}
                 <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2">
@@ -173,6 +176,7 @@
                     <i class="fas fa-home"></i> Back to Dashboard
                 </a>
             {% endif %}
+           
         </div>
     </div>
     

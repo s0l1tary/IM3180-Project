@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
 from .models import *
 import random
 import json
@@ -43,6 +44,9 @@ def take_quiz(request):
             quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="PLACEMENT")
         else:
             topic = progress.topic
+            if progress.requires_review == True:
+                messages.warning(request, "You must review the topic content before attempting a quiz.")
+                return redirect("content_pdf", topic_id = topic.id)
 
             # Create a new quiz session
             quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")

@@ -19,6 +19,10 @@ def content(request):
 @login_required
 def content_pdf(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
+    progress = UserTopicProgress.objects.get(user=request.user, topic=topic)
+    if progress.requires_review:
+        progress.requires_review = False
+        progress.save()
     return render(request, "content/materials.html", {
         'topic': topic
     })
