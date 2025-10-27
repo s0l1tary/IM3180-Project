@@ -51,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'content.middleware.AllowMediaFrameMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -137,3 +139,5 @@ LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# SECURE_BROWSER_XFRAME_OPTIONS = 'SAMEORIGIN'
