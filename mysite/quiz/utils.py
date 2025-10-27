@@ -43,7 +43,10 @@ def update_user_progress(user_progress, quiz_type, quiz_score, question_records)
 
         total_score_gain = base_score_gain * streak_multiplier
 
-        updated_score = user_progress.score + total_score_gain
+        updated_score = min(100, user_progress.score + total_score_gain)
+
+        # Update recent_score_gain
+        user_progress.recent_score_gain = total_score_gain
 
     # Update score
     user_progress.score = round(updated_score, 2)

@@ -161,6 +161,10 @@ def results(request, quiz_id):
         topic=quiz.topic
     ).first()
 
+    # Calculate old_score
+    old_score = progress.score - progress.recent_score_gain
+    old_score = max(0, old_score)
+
     # Calculate statistics
     total_questions = question_records.count()
     correct_answers = question_records.filter(is_correct=True).count()
@@ -175,6 +179,8 @@ def results(request, quiz_id):
         'passed': quiz.score >= 40,
         'topic': quiz.topic,
         'progress': progress,
+        'recent_score_gain': progress.recent_score_gain,
+        'old_score': old_score,
         
         # Statistics
         'total_questions': total_questions,

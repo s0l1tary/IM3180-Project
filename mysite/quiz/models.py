@@ -61,6 +61,9 @@ class UserTopicProgress(models.Model):
     pass_streak = models.IntegerField(default = 0)
     high_score_streak = models.IntegerField(default = 0)
 
+    # Recent score gain
+    recent_score_gain = models.FloatField(default = 0.0)
+
     # Thresholds
     PASS_THRESHOLD = 40.0
     HIGH_SCORE_THRESHOLD = 75.0

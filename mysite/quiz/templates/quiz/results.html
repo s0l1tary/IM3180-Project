@@ -28,7 +28,54 @@
                     <i class="fas fa-times-circle"></i> Did Not Pass
                 </h3>
             {% endif %}
-            <p class="text-muted">Pass threshold: 50%</p>
+        </div>
+    </div>
+
+    <!-- Progress Bar Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="fas fa-chart-line"></i> Topic Progress
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="progress mb-2">
+                <!-- Old progress (gray) -->
+                <div class="progress-bar progress-bar-old" 
+                     role="progressbar" 
+                     style="width: {{ old_score }}%">
+                    {% if old_score > 8 %}
+                        {{ old_score|floatformat:1 }}%
+                    {% endif %}
+                </div>
+                <!-- Gained progress (green) -->
+                <div class="progress-bar progress-bar-gain" 
+                     role="progressbar" 
+                     style="width: {{ recent_score_gain }}%">
+                    {% if recent_score_gain > 8 %}
+                        +{{ recent_score_gain|floatformat:1 }}%
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="progress-label">
+                <span class="text-muted">
+                    <i class="fas fa-circle text-secondary"></i> Previous: {{ old_score|floatformat:1 }}%
+                </span>
+                <span class="text-success font-weight-bold">
+                    <i class="fas fa-arrow-up"></i> Gained: +{{ recent_score_gain|floatformat:1 }}%
+                </span>
+                <span class="text-primary font-weight-bold">
+                    Total: {{ progress.score|floatformat:1 }}%
+                </span>
+            </div>
+            
+            {% if progress.score >= 100 %}
+                <div class="alert alert-success text-center mt-3 mb-0">
+                    <i class="fas fa-trophy"></i> 
+                    <strong>Topic Completed!</strong>
+                </div>
+            {% endif %}
         </div>
     </div>
     
