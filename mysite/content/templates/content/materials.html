@@ -9,8 +9,8 @@
 
         {% if topic.pdf_file %}
             <div class="ratio ratio-4x3 border rounded shadow-sm">
-                <object data="{{ topic.pdf_file.url }}" type="application/pdf" width="100%" height="800px">
-                    <p>Unable to display PDF. <a href="{{ topic.pdf_file.url }}">Download instead</a>.</p>
+                <object data="{{ topic.pdf_file.url }}#view=FitH&toolbar=1" type="application/pdf" width="100%" height="800px">
+                    <p>Can't see the PDF? <a href="{{ topic.pdf_file.url }}" download>Download instead</a>.</p>
                 </object>
             </div>
         {% else %}
