@@ -38,39 +38,75 @@
                 <i class="fas fa-chart-line"></i> Topic Progress
             </h5>
         </div>
-        <div class="card-body">
-            <div class="progress mb-2">
-                <!-- Old progress (gray) -->
-                <div class="progress-bar progress-bar-old" 
-                     role="progressbar" 
-                     style="width: {{ old_score }}%">
-                    {% if old_score > 8 %}
-                        {{ old_score|floatformat:1 }}%
-                    {% endif %}
+        <div class="card-body p-4">
+            <!-- Progress Bar with Quiz Theme -->
+            <div class="position-relative mb-3">
+                <div class="progress" style="height: 20px; border-radius: 15px; background-color: #e9ecef; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                    <!-- Old progress (gray) -->
+                    <div class="progress-bar bg-secondary" 
+                        role="progressbar" 
+                        style="width: 0%; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 15px;"
+                        data-width="{{ old_score }}"
+                        id="oldProgress">
+                    </div>
+                    <!-- Gained progress (green with pattern) -->
+                    <div class="progress-bar" 
+                        role="progressbar" 
+                        style="width: 0%; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s; background: linear-gradient(90deg, #28a745 0%, #20c997 100%); border-radius: 15px; box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);"
+                        data-width="{{ recent_score_gain }}"
+                        id="gainProgress">
+                    </div>
                 </div>
-                <!-- Gained progress (green) -->
-                <div class="progress-bar progress-bar-gain" 
-                     role="progressbar" 
-                     style="width: {{ recent_score_gain }}%">
-                    {% if recent_score_gain > 8 %}
-                        +{{ recent_score_gain|floatformat:1 }}%
-                    {% endif %}
+                
+                <!-- Milestone Markers -->
+                <div class="position-absolute" style="top: -5px; left: 25%; transform: translateX(-50%);">
+                    <i class="fas fa-star text-warning" style="font-size: 10px; opacity: 0.3;"></i>
+                </div>
+                <div class="position-absolute" style="top: -5px; left: 50%; transform: translateX(-50%);">
+                    <i class="fas fa-star text-warning" style="font-size: 10px; opacity: 0.5;"></i>
+                </div>
+                <div class="position-absolute" style="top: -5px; left: 75%; transform: translateX(-50%);">
+                    <i class="fas fa-star text-warning" style="font-size: 10px; opacity: 0.7;"></i>
+                </div>
+                <div class="position-absolute" style="top: -5px; left: 100%; transform: translateX(-50%);">
+                    <i class="fas fa-trophy text-warning" style="font-size: 12px;"></i>
                 </div>
             </div>
             
-            <div class="progress-label">
-                <span class="text-muted">
-                    <i class="fas fa-circle text-secondary"></i> Previous: {{ old_score|floatformat:1 }}%
-                </span>
-                <span class="text-success font-weight-bold">
-                    <i class="fas fa-arrow-up"></i> Gained: +{{ recent_score_gain|floatformat:1 }}%
-                </span>
-                <span class="text-primary font-weight-bold">
-                    Total: {{ progress.score|floatformat:1 }}%
-                </span>
+            <!-- Animated Stats Cards -->
+            <div class="row mt-4 text-center">
+                <div class="col-4">
+                    <div class="stat-badge" id="prevBadge" style="opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out;">
+                        <div class="badge-icon">
+                            <i class="fas fa-flag text-secondary"></i>
+                        </div>
+                        <div class="badge-label">Previous Score</div>
+                        <div class="badge-value text-secondary">{{ old_score|floatformat:1 }}%</div>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="stat-badge" id="gainBadge" style="opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out 0.3s;">
+                        <div class="badge-icon">
+                            <i class="fas fa-arrow-up text-success"></i>
+                        </div>
+                        <div class="badge-label">Score Earned</div>
+                        <div class="badge-value text-success">+{{ recent_score_gain|floatformat:1 }}%</div>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="stat-badge" id="totalBadge" style="opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out 0.6s;">
+                        <div class="badge-icon">
+                            <i class="fas fa-medal text-primary"></i>
+                        </div>
+                        <div class="badge-label">Current Score</div>
+                        <div class="badge-value text-primary">{{ progress.score|floatformat:1 }}%</div>
+                    </div>
+                </div>
             </div>
             
-            {% if progress.score >= 100 %}
+            {% if progress.score >= 90 %}
                 <div class="alert alert-success text-center mt-3 mb-0">
                     <i class="fas fa-trophy"></i> 
                     <strong>Topic Completed!</strong>
@@ -181,4 +217,6 @@
     </div>
     
 </div>
+
+<script src="{% static 'quiz/js/results.js' %}"></script>
 {% endblock %}

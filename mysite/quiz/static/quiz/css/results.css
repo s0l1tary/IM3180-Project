@@ -58,33 +58,74 @@
 }
 
 /* Progress Bar Styling */
-.progress {
-    height: 40px;
-    border-radius: 20px;
-    background-color: #e9ecef;
+.stat-badge {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
 }
 
-.progress-bar-old {
-    background-color: #6c757d;
-    color: white;
+.stat-badge:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-color: #007bff;
+}
+
+.badge-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge-label {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.badge-value {
+    font-size: 1.5rem;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.progress-bar-gain {
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Gradient header */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
+/* Celebration animation */
+@keyframes celebrate {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.05) rotate(2deg);
+    }
+    75% {
+        transform: scale(1.05) rotate(-2deg);
+    }
+}
+
+/* Pulse animation for milestone stars */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Add glow effect to progress bar */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
+    }
 }
