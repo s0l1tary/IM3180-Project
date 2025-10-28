@@ -1,0 +1,13 @@
+body {
+    background-color: #d4e7fd;
+}
+
+.card {
+    border: 2px solid #d4e4f5;
+    border-radius: 10px;
+    background-color: #f9fbfd;
+}
+
+.card:hover {
+    cursor: pointer;
+}

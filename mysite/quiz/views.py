@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
 from .models import *
 import random
 import json
 from django.utils import timezone
-from .utils import calculate_quiz_score, update_user_progress
+from .utils import calculate_quiz_score, update_user_progress, get_question_mix
 
 @login_required
 def take_quiz(request):
@@ -42,6 +44,9 @@ def take_quiz(request):
             quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="PLACEMENT")
         else:
             topic = progress.topic
+            if progress.requires_review == True:
+                messages.warning(request, "You must review the topic content before attempting a quiz.")
+                return redirect("content_pdf", topic_id = topic.id)
 
             # Create a new quiz session
             quiz = QuizSession.objects.create(user=user, topic=topic, quiz_type="REGULAR")
@@ -52,13 +57,7 @@ def take_quiz(request):
         hard_qs = list(Question.objects.filter(topic=topic, difficulty="HARD").order_by("?")[:5])
         questions = easy_qs + hard_qs
     else:
-        score = progress.score
-        if score < 50:
-            num_easy, num_hard = 7, 3
-        elif score < 80:
-            num_easy, num_hard = 5, 5
-        else:
-            num_easy, num_hard = 3, 7
+        num_easy, num_hard = get_question_mix(user, topic)
 
         easy_qs = list(Question.objects.filter(topic=topic, difficulty="EASY").order_by("?")[:num_easy])
         hard_qs = list(Question.objects.filter(topic=topic, difficulty="HARD").order_by("?")[:num_hard])
@@ -141,22 +140,71 @@ def submit_quiz(request, quiz_id):
 
     # Update UserTopicProgress
     user_progress = UserTopicProgress.objects.get(user=user, topic=quiz.topic)
-    update_user_progress(user_progress, quiz.quiz_type, score)
+    update_user_progress(user_progress, quiz.quiz_type, score, question_records)
 
-    request.session["last_score"] = score
+    results_url = reverse('results', args=[quiz.id])
 
     return JsonResponse({
         "message": "Quiz submitted successfully",
-        "score": score,
-        "mastery_level": user_progress.mastery_level,
+        "results_url": results_url,
     })
 
 @login_required
-def results(request):
-    score = request.session.get("last_score", None)
-    return render(request, "quiz/results.html", {
-        "score": score
-    })
+def results(request, quiz_id):
+    quiz = QuizSession.objects.get(id=quiz_id)
+
+    # Get question records
+    question_records = (
+        quiz.question_records
+            .all()
+            .select_related('question', 'chosen_option')
+            .prefetch_related('question__options')
+            .order_by('id')
+    )
+
+    # Get progress info
+    progress = UserTopicProgress.objects.filter(
+        user=request.user,
+        topic=quiz.topic
+    ).first()
+
+    # Calculate old_score
+    old_score = progress.score - progress.recent_score_gain
+    old_score = max(0, old_score)
+
+    # Calculate statistics
+    total_questions = question_records.count()
+    correct_answers = question_records.filter(is_correct=True).count()
+    easy_correct = question_records.filter(difficulty='EASY', is_correct=True).count()
+    easy_total = question_records.filter(difficulty='EASY').count()
+    hard_correct = question_records.filter(difficulty='HARD', is_correct=True).count()
+    hard_total = question_records.filter(difficulty='HARD').count()
+
+    context = {
+        'quiz_session': quiz,
+        'question_records': question_records,
+        'passed': quiz.score >= 40,
+        'topic': quiz.topic,
+        'progress': progress,
+        'recent_score_gain': progress.recent_score_gain,
+        'old_score': old_score,
+        
+        # Statistics
+        'total_questions': total_questions,
+        'correct_answers': correct_answers,
+        'easy_correct': easy_correct,
+        'easy_total': easy_total,
+        'hard_correct': hard_correct,
+        'hard_total': hard_total,
+        
+        # Streak info
+        'pass_streak': progress.pass_streak if progress else None,
+        'high_score_streak': progress.high_score_streak if progress else None,
+        'fail_streak': progress.fail_streak if progress else 0,
+        'requires_review': progress.requires_review if progress else False,
+    }
+
+    return render(request, "quiz/results.html", context)
 
 @login_required
 def completed(request):

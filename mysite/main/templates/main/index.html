@@ -8,67 +8,124 @@
 {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  <div class="landing-page">
-    <section class="welcome-section row-1">
-      <div class="row-1-col-1">
-        <h1>Welcome to DeepLearn</h1>
-        <p>Your IE2110 Signals and Systems journey starts here!</p>
-        <p>Ready to find your level?</p>
-        <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
-      </div>
-      <div class="row-1-col-2">
-        <img src="{% static 'main/image/landingpg/indeximg.png' %}" alt="Landing Page Banner" />
-      </div>
-    </section>
-  </div>
+<div class="landing-page">
+  <!-- Banner -->
+  <section class="welcome-section row-1">
+    <div class="row-1-col-1">
+      <h1>Welcome to DeepLearn</h1>
+      <p>Your IE2110 Signals and Systems journey starts here!</p>
+      <p>Ready to find your level?</p>
+      <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
+    </div>
+    <div class="row-1-col-2">
+      <img src="{% static 'main/image/landingpg/indeximg.png' %}" alt="Landing Page Banner" />
+    </div>
+  </section>
 
-{% else %}
-  <div class="landing-page">
-    <section class="welcome-section row-1">
-      <div class="row-1-col-1">
-        <h1>Welcome to DeepLearn</h1>
-        <p>Your IE2110 Signals and Systems journey starts here!</p>
-        <p>Ready to find your level?</p>
-        <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
-      </div>
-      <div class="row-1-col-2">
-        <img src="{% static 'main/image/landingpg/indeximg.png' %}" alt="Landing Page Banner" />
-      </div>
-    </section>
-    <section class="features-section">
-      <h2>How DeepLearn Helps You</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="icon">
-            <img src="{% static 'main/image/landingpg/book-open-check.png' %}" alt="Adaptive Quizzes Icon" width="40" height="40">
+    {% if not user.is_authenticated %}
+      <!-- Features -->
+      <section class="features-section">
+        <h2>How DeepLearn Helps You</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">
+              <img src="{% static 'main/image/landingpg/book-open-check.png' %}" alt="Adaptive Quizzes Icon" width="40" height="40">
+            </div>
+            <h3>Adaptive Quizzes</h3>
+            <p>Test yourself at basic, intermediate, and advanced levels</p>
           </div>
-          <h3>Adaptive Quizzes</h3>
-          <p>Test yourself at basic, intermediate, and advanced levels</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">
-            <img src="{% static 'main/image/landingpg/Vector.png' %}" alt="AI Explanations Icon" width="40" height="40">
+          <div class="feature-card">
+            <div class="icon">
+              <img src="{% static 'main/image/landingpg/Vector.png' %}" alt="AI Explanations Icon" width="40" height="40">
+            </div>
+            <h3>AI Explanations</h3>
+            <p>Get solutions for questions answered incorrectly</p>
           </div>
-          <h3>AI Explanations</h3>
-          <p>Get solutions for questions answered incorrectly</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">
-            <img src="{% static 'main/image/landingpg/chart-bar-increasing.png' %}" alt="Weakness Analysis Icon" width="40" height="40">
+          <div class="feature-card">
+            <div class="icon">
+              <img src="{% static 'main/image/landingpg/chart-bar-increasing.png' %}" alt="Weakness Analysis Icon" width="40" height="40">
+            </div>
+            <h3>Weakness Analysis</h3>
+            <p>Identify topics you need to review and focus your study</p>
           </div>
-          <h3>Weakness Analysis</h3>
-          <p>Identify topics you need to review and focus your study</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">
-            <img src="{% static 'main/image/landingpg/chart-no-axes.png' %}" alt="Track Progress Icon" width="40" height="40">
+          <div class="feature-card">
+            <div class="icon">
+              <img src="{% static 'main/image/landingpg/chart-no-axes.png' %}" alt="Track Progress Icon" width="40" height="40">
+            </div>
+            <h3>Track Progress</h3>
+            <p>Monitor your improvement and unlock advanced content as you learn</p>
           </div>
-          <h3>Track Progress</h3>
-          <p>Monitor your improvement and unlock advanced content as you learn</p>
         </div>
-      </div>
-    </section>
+      </section>
+    
+    {% else %}
+    <!-- Topics -->
+      <section class="container mt-5">
+        <h2 class="text-center mb-4 fw-bold">Your Topics</h2>
+
+        <!-- Learning -->
+        <div class="mb-5">
+          <h4 class="mb-3 text-primary">Learning</h4>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for topic in learning %}
+            <div class="col">
+              <a href="{% url 'content_pdf' topic.id %}" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm border-primary border-2 hover-shadow">
+                  <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">{{ topic.name }}</h5>
+                    <p class="card-text text-muted">Continue your progress</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <p class="text-muted">No ongoing topics.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Mastered -->
+        <div class="mb-5">
+          <h4 class="mb-3 text-success">Mastered</h4>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for topic in mastered %}
+            <div class="col">
+              <a href="{% url 'content_pdf' topic.id %}" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm border-success border-2 hover-shadow">
+                  <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">{{ topic.name }}</h5>
+                    <p class="card-text text-muted">Review and reinforce your knowledge</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <p class="text-muted">You have not mastered any topics yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Not Started -->
+        <div class="mb-5">
+          <h4 class="mb-3 text-secondary">Not Started</h4>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for topic in not_started %}
+            <div class="col">
+              <a href="{% url 'content_pdf' topic.id %}" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm border-0 hover-shadow">
+                  <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">{{  topic.name }}</h5>
+                    <p class="card-text text-muted">Do more quizzes to unlock</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <p class="text-muted">No topics yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
   </div>
-{% endif %}
 {% endblock %}

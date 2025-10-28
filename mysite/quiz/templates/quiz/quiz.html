@@ -3,7 +3,6 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}">
-
 {% endblock %}
 
 {% block title %}
@@ -37,7 +36,6 @@ Quiz · DeepLearn
 
 <script>
   const submitUrl = "{% url 'submit_quiz' quiz_id %}";
-  const resultsUrl = "{% url 'results' %}";
 </script>
 <script src="{% static 'quiz/js/quiz.js' %}"></script>
 {% endblock %}

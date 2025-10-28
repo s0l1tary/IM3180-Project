@@ -32,8 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((response) => response.json())
       .then((data) => {
-        alert(`Quiz complete! Your score: ${data.score.toFixed(1)}%`);
-        window.location.href = resultsUrl;
+        window.location.href = data.results_url;
       });
     }
   });
