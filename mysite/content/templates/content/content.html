@@ -37,7 +37,7 @@
         <div class="row">
             {% for topic in mastered_topics %}
             <div class="col-md-3 mb-3">
-                <a class="card text-center shadow-sm bg-success text-white">
+                <a class="card text-center shadow-sm bg-success text-white text-decoration-none" href="{% url 'content_pdf' topic.id %}">
                     <div class="card-body">
                         <h5 class="card-title">{{ topic.name }}</h5>
                     </div>

@@ -33,6 +33,9 @@ def update_user_progress(user_progress, quiz_type, quiz_score, question_records)
     base_increment = 3
     if quiz_type == 'PLACEMENT':
         updated_score = quiz_score
+
+        # Update recent_score_gain
+        user_progress.recent_score_gain = quiz_score
     else:
         # Calculate score increment
         total_weight = sum(weights[q["difficulty"]] for q in question_records)
