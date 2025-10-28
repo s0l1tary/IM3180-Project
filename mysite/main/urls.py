@@ -9,4 +9,5 @@ urlpatterns = [
     path("grades/", views.grades, name="grades"),
     path("practice/", views.practice, name="practice"),
     path("quiz/", views.quiz, name="quiz"),        # quiz flow (picker diff then 5Qs then results)
+    path("explain/", views.explain, name="explain"),  # AI explanation endpoint
 ]

@@ -1,6 +1,9 @@
 # Notes
 - We are currently just using Django and its built in database sqlite3 and no longer using docker and mysql
 
+## Flowchart
+![flowchart image](./flowchart.jpg)
+
 ## How to run?
 - Prereq: have python installed with pip
 - create a virtual environment
@@ -62,6 +65,10 @@ python manage.py migrate
 1) Store html pages in main/templates
 2) Modify main/urls.py to path to the page
 3) Modify main.views.py to render the page
+
+
+## For AI
+- https://docs.perplexity.ai/getting-started/quickstart#python
 
 
 

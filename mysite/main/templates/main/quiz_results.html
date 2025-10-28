@@ -28,6 +28,15 @@
             </li>
           {% endfor %}
         </ul>
+        <!-- Add "Explain" button -->
+        <button 
+          class="btn btn-info explain-btn mt-2"
+          data-question="{{ r.question.text|escapejs }}"
+          data-answer="{% for opt in r.options %}{% if opt.id|stringformat:'s' == r.correct_id|stringformat:'s' %}{{ opt.text|escapejs }}{% endif %}{% endfor %}"
+          type="button"
+        >
+          Explain
+        </button>
       </div>
     {% endfor %}
 
@@ -36,4 +45,67 @@
       <a class="btn btn-outline-secondary" href="{% url 'quiz' %}">Change difficulty</a>
     </div>
   </div>
+
+  <!-- Explain Modal -->
+  <div class="modal fade" id="explainModal" tabindex="-1" aria-labelledby="explainModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="explainModalLabel">Explanation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="explain-content">
+          Loading...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // CSRF token helper function
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.explain-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var question = button.getAttribute('data-question');
+          var answer = button.getAttribute('data-answer');
+          var modal = new bootstrap.Modal(document.getElementById('explainModal'));
+          var modalContent = document.getElementById('explain-content');
+          modalContent.innerHTML = "Loading...";
+          fetch("{% url 'explain' %}", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-CSRFToken": csrftoken
+            },
+            body: "question=" + encodeURIComponent(question) + "&answer=" + encodeURIComponent(answer)
+          })
+          .then(response => response.json())
+          .then(data => {
+            modalContent.innerHTML = data.explanation || data.error || "No explanation returned.";
+            if (window.MathJax) { MathJax.typesetPromise([modalContent]); }
+          })
+          .catch(error => {
+            modalContent.innerHTML = "Error: " + error;
+          });
+          modal.show();
+        });
+      });
+    });
+  </script>
 {% endblock %}
