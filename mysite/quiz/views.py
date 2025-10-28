@@ -154,10 +154,13 @@ def results(request, quiz_id):
     quiz = QuizSession.objects.get(id=quiz_id)
 
     # Get question records
-    question_records = quiz.question_records.all().select_related(
-        'question', 
-        'chosen_option'
-    ).order_by('id')
+    question_records = (
+        quiz.question_records
+            .all()
+            .select_related('question', 'chosen_option')
+            .prefetch_related('question__options')
+            .order_by('id')
+    )
 
     # Get progress info
     progress = UserTopicProgress.objects.filter(

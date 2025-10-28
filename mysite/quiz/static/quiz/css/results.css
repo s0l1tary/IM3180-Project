@@ -129,3 +129,24 @@
         box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
     }
 }
+
+/* Question Review Styling */
+.question-review-card {
+    transition: transform 0.2s ease;
+}
+
+.answer-box {
+    transition: all 0.2s ease;
+}
+
+.answer-box:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.explanation-box {
+    font-size: 0.95rem;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}

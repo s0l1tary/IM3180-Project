@@ -194,7 +194,7 @@
     </div>
     
     <!-- Action Buttons -->
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-body text-center py-4">
             {% if requires_review %}
                 <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
@@ -212,10 +212,97 @@
                     <i class="fas fa-home"></i> Back to Dashboard
                 </a>
             {% endif %}
-           
         </div>
     </div>
-    
+
+    <!-- Detailed Question Review -->
+    <div class="card mb-4 border-0 shadow">
+        <div class="card-header bg-gradient-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list-check"></i> Question Review
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            {% for record in question_records %}
+            <div class="question-review-card mb-3 {% if record.is_correct %}border-success{% else %}border-danger{% endif %}" style="border-left: 4px solid; border-radius: 10px; background: #f8f9fa; padding: 1.5rem;">
+                
+                <!-- Question Header -->
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-dark text-light me-2" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;">
+                        Question {{ forloop.counter }}
+                    </span>
+                    <span class="badge {% if record.difficulty == 'EASY' %}bg-info text-dark{% else %}bg-warning text-dark{% endif %}" style="font-size: 0.85rem; padding: 0.4rem 0.7rem;">
+                        {{ record.difficulty }}
+                    </span>
+                    </div>
+                    <div>
+                        {% if record.is_correct %}
+                            <i class="fas fa-check-circle fa-2x text-success"></i>
+                        {% else %}
+                            <i class="fas fa-times-circle fa-2x text-danger"></i>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Question Text -->
+                <div class="mb-3">
+                    <h6 class="font-weight-bold text-dark">{{ record.question.text }}</h6>
+                </div>
+                
+                <!-- Answer Section -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="answer-box p-3" style="background: white; border-radius: 8px; border: 2px solid #e9ecef;">
+                            <small class="text-muted d-block mb-2">
+                                <i class="fas fa-lightbulb"></i> <strong>Correct Answer</strong>
+                            </small>
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
+                                <p class="mb-0 text-success font-weight-bold">
+                                    {% for option in record.question.options.all %}
+                                        {% if option.is_correct %}
+                                            {{ option.text }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if not record.is_correct %}
+                    <div class="col-md-6 mb-3">
+                        <div class="answer-box p-3" style="background: #fff5f5; border-radius: 8px; border: 2px solid #feb2b2;">
+                            <small class="text-muted d-block mb-2">
+                                <i class="fas fa-user"></i> <strong>Your Answer</strong>
+                            </small>
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-times-circle text-danger mt-1 mr-2"></i>
+                                <p class="mb-0 text-danger">
+                                    {{ record.chosen_option.text }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Explanation Section -->
+                {% if record.question.explanation %}
+                <div class="explanation-box mt-3 p-3" style="background: #e7f3ff; border-left: 4px solid #007bff; border-radius: 8px;">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-info-circle text-primary mt-1 mr-2"></i>
+                        <div>
+                            <strong class="text-primary">Explanation:</strong>
+                            <p class="mb-0 mt-1 text-dark">{{ record.question.explanation }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 <script src="{% static 'quiz/js/results.js' %}"></script>
