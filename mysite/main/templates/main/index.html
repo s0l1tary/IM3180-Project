@@ -111,14 +111,12 @@
           <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for topic in not_started %}
             <div class="col">
-              <a href="{% url 'content_pdf' topic.id %}" class="text-decoration-none text-dark">
-                <div class="card h-100 shadow-sm border-0 hover-shadow">
-                  <div class="card-body text-center">
-                    <h5 class="card-title fw-semibold">{{  topic.name }}</h5>
-                    <p class="card-text text-muted">Do more quizzes to unlock</p>
-                  </div>
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                  <h5 class="card-title fw-semibold">{{  topic.name }}</h5>
+                  <p class="card-text text-muted">Do more quizzes to unlock</p>
                 </div>
-              </a>
+              </div>
             </div>
             {% empty %}
             <p class="text-muted">No topics yet.</p>

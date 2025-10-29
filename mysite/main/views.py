@@ -34,10 +34,6 @@ def home(request):
     return render(request, 'main/home.html')
 
 @login_required
-def grades(request):
-    return render(request, 'main/grades.html')
-
-@login_required
 def practice(request):
     return render(request, 'main/practice.html')
 
