@@ -247,7 +247,7 @@
                 
                 <!-- Question Text -->
                 <div class="mb-3">
-                    <h6 class="font-weight-bold text-dark">{{ record.question.text }}</h6>
+                    <h6 class="question-text font-weight-bold text-dark">{{ record.question.text }}</h6>
                 </div>
                 
                 <!-- Answer Section -->
@@ -259,7 +259,7 @@
                             </small>
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
-                                <p class="mb-0 text-success font-weight-bold">
+                                <p class="correct-answer mb-0 text-success font-weight-bold">
                                     {% for option in record.question.options.all %}
                                         {% if option.is_correct %}
                                             {{ option.text }}
@@ -288,13 +288,20 @@
                 </div>
                 
                 <!-- Explanation Section -->
-                {% if record.question.explanation %}
+                {% if not record.is_correct %}
                 <div class="explanation-box mt-3 p-3" style="background: #e7f3ff; border-left: 4px solid #007bff; border-radius: 8px;">
                     <div class="d-flex align-items-start">
                         <i class="fas fa-info-circle text-primary mt-1 mr-2"></i>
                         <div>
                             <strong class="text-primary">Explanation:</strong>
-                            <p class="mb-0 mt-1 text-dark">{{ record.question.explanation }}</p>
+                            <button 
+                                class="btn btn-sm btn-info explain-btn mt-2"
+                                data-question="{{ record.question.text|escapejs }}"
+                                data-answer="{% for option in record.question.options.all %}{% if option.is_correct %}{{ option.text|escapejs }}{% endif %}{% endfor %}"
+                                type="button"
+                            >Explain</button>
+                            <!-- Container for the explanation text -->
+                            <div class="explanation-content mt-2"></div>
                         </div>
                     </div>
                 </div>
@@ -305,5 +312,8 @@
     </div>
 </div>
 
+<script>
+  const explainUrl = "{% url 'explain' %}";
+</script>
 <script src="{% static 'quiz/js/results.js' %}"></script>
 {% endblock %}

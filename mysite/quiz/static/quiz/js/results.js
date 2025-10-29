@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Progress Bar Animation
     const oldProgress = document.getElementById('oldProgress');
     const gainProgress = document.getElementById('gainProgress');
     const prevBadge = document.getElementById('prevBadge');
@@ -41,4 +42,56 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1700);
         
     }, 200);
+
+    // Explanation Button Handler
+    document.querySelectorAll('.explain-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const questionText = btn.closest('.question-review-card').querySelector('.question-text').textContent.trim();
+        const answerText = btn.closest('.question-review-card').querySelector('.correct-answer').textContent.trim();
+        const cacheKey = questionText + "::" + answerText;
+        const container = btn.closest('.question-review-card').querySelector('.explanation-content');
+        console.log("Requesting explanation for:", questionText, answerText);
+        
+        if (explanationCache[cacheKey]) {
+            container.innerHTML = explanationCache[cacheKey];
+        } else {
+            container.innerHTML = "Loading...";
+            fetch(explainUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: `question=${encodeURIComponent(questionText)}&answer=${encodeURIComponent(answerText)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                const explanation = data.explanation || data.error || "No explanation.";
+                explanationCache[cacheKey] = explanation;
+                container.innerHTML = explanation;
+            })
+            .catch(e => {
+                container.innerHTML = "Error fetching explanation.";
+            });
+        }
+      });
+    });
 });
+
+  // CSRF token helper
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+  const explanationCache = {};
