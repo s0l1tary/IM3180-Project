@@ -43,7 +43,3 @@ def grades(request):
     if request.user.is_authenticated:
         queryset = queryset.filter(user=request.user)
     return render(request, 'main/grades.html', {'progress_list': queryset})
-
-
-
-
