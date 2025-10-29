@@ -7,7 +7,7 @@ def signup(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("/home")
+            return redirect("index")
     else:
         form = RegisterForm()
     return render(request, 'register/signup.html', {"form": form})

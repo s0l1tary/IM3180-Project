@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+{% load static %}   
+
+{% block title %}Content · DeepLearn{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'content/css/content.css' %}">
+{% endblock %}
+ 
+{% block content %}
+    <div class="container mt-5">
+    <h1 class="mb-4">Review Content</h1>
+
+    <!-- Learning Topics -->
+    <h3 class="mb-3">Learning</h3>
+    {% if learning_topics %}
+        <div class="row">
+            {% for topic in learning_topics %}
+            <div class="col-md-3 mb-3">
+                <a class="card text-center shadow-sm text-decoration-none text-dark" href="{% url 'content_pdf' topic.id %}">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ topic.name }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You are not currently learning any topics.</p>
+    {% endif %}
+
+    <!-- Mastered Topics -->
+    <h3 class="mt-4 mb-3">Mastered</h3>
+    {% if mastered_topics %}
+        <div class="row">
+            {% for topic in mastered_topics %}
+            <div class="col-md-3 mb-3">
+                <a class="card text-center shadow-sm bg-success text-white text-decoration-none" href="{% url 'content_pdf' topic.id %}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ topic.name }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven't mastered any topics yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

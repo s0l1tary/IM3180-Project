@@ -1,12 +1,48 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">DeepLearn</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="{% url 'content' %}">Content</a>
-            <a class="nav-link" href="{% url 'quiz' %}">Quiz</a>
-            <a class="nav-link" href="{% url 'practice' %}">Practice</a>
-            <a class="nav-link" href="{% url 'grades' %}">Grades</a>
-            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+        <a class="navbar-brand" href="{% url 'index' %}">DeepLearn</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'content' %}">Content</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'practice' %}">Practice</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'grades' %}">Grades</a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Welcome, {{ user.username }}!
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li>
+                            <form method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item btn btn-link">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </nav>

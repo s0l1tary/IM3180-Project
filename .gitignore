@@ -14,6 +14,3 @@ __pycache__/
 
 # Venv
 venv/
-
-# db
-*.sqlite3
