@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from .models import *
 import random
 import json
 import re
 import markdown
+from markdown.extensions import Extension
 import requests
 from django.utils import timezone
 from .utils import calculate_quiz_score, update_user_progress, get_question_mix
@@ -220,9 +221,17 @@ def explain(request):
     if request.method == "POST":
         question = request.POST.get("question")
         answer = request.POST.get("answer")
+
         if not question or not answer:
             return JsonResponse({"error": "Missing question or answer."}, status=400)
-        prompt = f"Explain why this is the correct answer:\nQuestion: {question}\nAnswer: {answer}"
+        
+        prompt = f"""
+        Explain why this is the correct answer.
+        If using mathematical expressions, format them in LaTeX and wrap them in \\( ... \\) for inline math
+        or \\[ ... \\] for block math.
+        Question: {question}
+        Answer: {answer}"""
+
         url = "https://api.perplexity.ai/chat/completions"
         headers = {
             "Authorization": f"Bearer {API_KEY}",
@@ -239,34 +248,34 @@ def explain(request):
             response = requests.post(url, headers=headers, json=payload, timeout=30)
             response.raise_for_status()
             data = response.json()
+
             explanation = data["choices"][0]["message"]["content"]
-            explanation = markdown_math_safe(explanation)
-            return JsonResponse({"explanation": explanation})
+            explanation = ensure_math_delimiters(explanation)
+
+            # 🔹 Send raw string without escaping backslashes
+            return HttpResponse(
+                json.dumps({"explanation": explanation}, ensure_ascii=False),
+                content_type="application/json"
+            )
+        
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+        
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
-def markdown_math_safe(text):
-    # Remove [number][number] references
-    text = re.sub(r'(\[\d+\])+', '', text)
 
-    # Replace markdown bold **text** with <strong>text</strong>
-    text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
+def ensure_math_delimiters(text: str) -> str:
+    """
+    Detects math expressions like \frac, \cos, \pi, etc., and ensures they are
+    wrapped in $...$ or \( ... \) so MathJax can render them properly.
+    """
+    # If text already contains delimiters, don't touch it
+    if re.search(r'(\$|\\\(|\\\[)', text):
+        return text
 
-    # Replace headers ## text with <h2>text</h2>
-    text = re.sub(r'## (.*)', r'<h2>\1</h2>', text)
-    text = re.sub(r'# (.*)', r'<h1>\1</h1>', text)
-
-    # Replace bullet points (- or *) with <ul><li>
-    # This is a basic approach
-    text = re.sub(r'(?:^|\n)[\*\-]\s+(.*)', r'<li>\1</li>', text)
-
-    # Add <ul> around consecutive <li>'s:
-    text = re.sub(r'((<li>.*?</li>\n*)+)', r'<ul>\1</ul>', text)
-
-    # Replace double newline with <br><br> for paragraphs
-    text = re.sub(r'\n{2,}', '<br><br>', text)
-    # Replace single newline with <br>
-    text = text.replace('\n', '<br>')
+    # If plain LaTeX commands are detected but no delimiters
+    if re.search(r'\\[a-zA-Z]+', text):
+        # Add inline delimiters
+        return f"$${text}$$"
 
     return text

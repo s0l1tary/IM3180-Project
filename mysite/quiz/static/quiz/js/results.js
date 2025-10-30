@@ -45,16 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Explanation Button Handler
     document.querySelectorAll('.explain-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const questionText = btn.closest('.question-review-card').querySelector('.question-text').textContent.trim();
-        const answerText = btn.closest('.question-review-card').querySelector('.correct-answer').textContent.trim();
-        const cacheKey = questionText + "::" + answerText;
-        const container = btn.closest('.question-review-card').querySelector('.explanation-content');
-        console.log("Requesting explanation for:", questionText, answerText);
-        
-        if (explanationCache[cacheKey]) {
-            container.innerHTML = explanationCache[cacheKey];
-        } else {
+        btn.addEventListener('click', () => {
+            const questionText = btn.closest('.question-review-card').querySelector('.question-text').textContent.trim();
+            const answerText = btn.closest('.question-review-card').querySelector('.correct-answer').textContent.trim();
+            const cacheKey = questionText + "::" + answerText;
+            const container = btn.closest('.question-review-card').querySelector('.explanation-content');
+            console.log("Requesting explanation for:", questionText, answerText);
+            
+            if (explanationCache[cacheKey]) {
+                container.innerHTML = explanationCache[cacheKey];
+                if (window.MathJax) MathJax.typesetPromise([container]);
+                return;
+            }
             container.innerHTML = "Loading...";
             fetch(explainUrl, {
                 method: 'POST',
@@ -69,12 +71,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const explanation = data.explanation || data.error || "No explanation.";
                 explanationCache[cacheKey] = explanation;
                 container.innerHTML = explanation;
+                console.log(data.explanation)
+
+                // 🔹 Trigger MathJax rendering after inserting HTML
+                if (window.MathJax) {
+                    MathJax.typesetPromise([container]).catch(err => console.error("MathJax error:", err));
+                }
             })
             .catch(e => {
+                console.error(e);
                 container.innerHTML = "Error fetching explanation.";
             });
-        }
-      });
+        });
     });
 });
 

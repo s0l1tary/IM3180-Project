@@ -192,28 +192,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Action Buttons -->
-    <div class="card mb-4">
-        <div class="card-body text-center py-4">
-            {% if requires_review %}
-                <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
-                    <i class="fas fa-book-open"></i> Review Course Content
-                </a>
-                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </a>
-                <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
-            {% else %}
-                <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2">
-                    <i class="fas fa-arrow-right"></i> Continue to Next Quiz
-                </a>
-                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </a>
-            {% endif %}
-        </div>
-    </div>
 
     <!-- Detailed Question Review -->
     <div class="card mb-4 border-0 shadow">
@@ -308,6 +286,28 @@
                 {% endif %}
             </div>
             {% endfor %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card mb-4">
+        <div class="card-body text-center py-4">
+            {% if requires_review %}
+                <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
+                    <i class="fas fa-book-open"></i> Review Course Content
+                </a>
+                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </a>
+                <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
+            {% else %}
+                <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2">
+                    <i class="fas fa-arrow-right"></i> Continue to Next Quiz
+                </a>
+                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
