@@ -221,16 +221,32 @@ def explain(request):
     if request.method == "POST":
         question = request.POST.get("question")
         answer = request.POST.get("answer")
+        chosen = request.POST.get("chosen")
 
-        if not question or not answer:
+        if not question or not answer or not chosen:
             return JsonResponse({"error": "Missing question or answer."}, status=400)
         
         prompt = f"""
-        Explain why this is the correct answer.
-        If using mathematical expressions, format them in LaTeX and wrap them in \\( ... \\) for inline math
-        or \\[ ... \\] for block math.
-        Question: {question}
-        Answer: {answer}"""
+        You are an academic tutor explaining quiz answers to university students.
+
+        Question:
+        {question}
+
+        Chosen Answer:
+        {chosen}
+
+        Correct Answer:
+        {answer}
+
+        Please provide a clear and structured explanation that includes:
+        1. The reasoning behind why the correct answer is correct.
+        2. If the chosen answer is wrong, explain why it is incorrect.
+        3. Show any necessary steps, logic, or calculations clearly.
+        4. If using mathematical expressions, format them in LaTeX and wrap them in \\( ... \\) for inline math or \\[ ... \\] for block math.
+        5. Keep your explanation concise (max 5 paragraphs) and suitable for a university-level understanding.
+
+        Use **bold** for key terms and Markdown for clarity.
+        """
 
         url = "https://api.perplexity.ai/chat/completions"
         headers = {
