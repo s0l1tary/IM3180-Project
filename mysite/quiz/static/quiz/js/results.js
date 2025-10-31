@@ -50,43 +50,108 @@ document.addEventListener('DOMContentLoaded', function() {
             const questionText = btn.closest('.question-review-card').querySelector('.question-text').textContent.trim();
             const answerText = btn.closest('.question-review-card').querySelector('.correct-answer').textContent.trim();
             const chosenText = btn.closest('.question-review-card').querySelector('.chosen-answer').textContent.trim();
-
-            const cacheKey = questionText + "::" + answerText;
             const container = btn.closest('.question-review-card').querySelector('.explanation-content');
-            console.log("Requesting explanation for:", questionText, answerText, chosenText);
             
-            if (explanationCache[cacheKey]) {
-                container.innerHTML = explanationCache[cacheKey];
-                if (window.MathJax) MathJax.typesetPromise([container]);
-                return;
-            }
-            container.innerHTML = "Loading...";
-            fetch(explainUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrftoken
-                },
-                body: `question=${encodeURIComponent(questionText)}&answer=${encodeURIComponent(answerText)}&chosen=${encodeURIComponent(chosenText)}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                const explanation = data.explanation || data.error || "No explanation.";
-                explanationCache[cacheKey] = explanation;
-                container.innerHTML = explanation;
-                console.log(data.explanation)
+            // For debug
+            console.log("Requesting explanation for:", questionText, answerText, chosenText);
 
-                // 🔹 Trigger MathJax rendering after inserting HTML
-                if (window.MathJax) {
-                    MathJax.typesetPromise([container]).catch(err => console.error("MathJax error:", err));
-                } else {
-                    btn.style.display = 'none';
+            let conversation = []
+            
+            container.innerHTML = "Loading...";
+
+            function sendToAI(user_response = null) {
+                const payload = {
+                    question: questionText,
+                    correct_answer: answerText,
+                    user_answer: chosenText,
+                    user_response: user_response === null ? '' : user_response.trim(),
+                    conversation: conversation
+                };
+
+                console.log("Sending payload:", payload);
+                
+                fetch(explainUrl, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        container.innerHTML = "Error: " + data.error;
+                        return;
+                    }
+
+                    // Log AI response
+                    console.log("AI Response:", data.reply);
+
+                    // Save conversation history
+                    conversation = data.conversation;
+
+                    // Render AI response
+                    renderAIMessage(data.reply, data.finished);
+                })
+                .catch(() => {
+                    container.innerHTML = "Error fetching AI response.";
+                });
+            }
+
+            function renderAIMessage(reply, finished) {
+                // Parse for options (A., B., etc.)
+                const optionMatches = reply.match(/^[A-D]\.\s.*$/gm);
+
+                // Remove options from explanation text before displaying
+                let explanationText = reply;
+                if (optionMatches) {
+                    explanationText = reply.replace(/^[A-D]\.\s.*$/gm, '').trim();
                 }
-            })
-            .catch(e => {
-                console.error(e);
-                container.innerHTML = "Error fetching explanation.";
-            });
+
+                // Display cleaned explanation text
+                container.innerHTML = explanationText;
+
+                // Display options as buttons
+                if (optionMatches && !finished) {
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'subquestion-options mt-2';
+
+                    optionMatches.forEach(line => {
+                        const btnOption = document.createElement('button');
+                        btnOption.innerHTML = line;
+                        btnOption.className = 'btn btn-outline-primary btn-sm d-block my-1';
+                        btnOption.addEventListener('click', () => {
+                            // Disable buttons after one click
+                            optionsDiv.querySelectorAll('button').forEach(b => b.disabled = true);
+                            sendToAI(line);
+                        });
+                        optionsDiv.appendChild(btnOption);
+                    });
+                    container.appendChild(optionsDiv);
+
+                    // Render math expressions
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        MathJax.typesetPromise([container])
+                            .then(() => console.log("MathJax rendered"))
+                            .catch(err => console.error("MathJax rendering error:", err));
+                    }
+                } else if (finished) {
+                    const endMsg = document.createElement('p');
+                    endMsg.textContent = "End of explanation session.";
+                    endMsg.className = "text-success mt-2";
+                    container.appendChild(endMsg);
+
+                    // Render math expressions for final message too
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        MathJax.typesetPromise([container])
+                            .then(() => console.log("MathJax rendered"))
+                            .catch(err => console.error("MathJax rendering error:", err));
+                    }
+                }
+            }
+            
+            sendToAI();
         });
     });
 });

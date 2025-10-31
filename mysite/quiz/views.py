@@ -13,8 +13,6 @@ import requests
 from django.utils import timezone
 from .utils import calculate_quiz_score, update_user_progress, get_question_mix
 
-API_KEY = "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"
-
 @login_required
 def take_quiz(request):
     user = request.user
@@ -212,72 +210,133 @@ def results(request, quiz_id):
 
     return render(request, "quiz/results.html", context)
 
+
 @login_required
 def completed(request):
     return render(request, "quiz/completed.html")
 
+
+API_KEY = "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"
+API_URL = "https://api.perplexity.ai/chat/completions"
+
+SYSTEM_PROMPT = """
+You are an interactive tutor helping a university student understand a quiz question.
+You will receive:
+- the original question,
+- the correct answer,
+- and the student's chosen (wrong) answer,
+- plus the conversation so far.
+
+Your task:
+1. Break the explanation into small conceptual substeps that lead to the correct answer.
+2. For each substep, provide a multiple-choice question (A, B, C...) with 2 to 4 options.
+3. When the student responds, give a short explanation whether that choice is correct or not.
+4. If more steps are needed, ask the next subquestion.
+5. When all substeps are done, conclude by summarizing why the correct answer is correct and why the user's original answer was wrong.
+6. If using mathematics, use LaTeX math delimiters — \\( ... \\) for inline math, \\[ ... \\] for block math.
+7. Format options clearly as:
+   A. option text
+   B. option text
+   etc.
+8. End your final message with the tag: [END]
+"""
+
 @login_required
 def explain(request):
-    if request.method == "POST":
-        question = request.POST.get("question")
-        answer = request.POST.get("answer")
-        chosen = request.POST.get("chosen")
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"} ,status=405)
+    
+    try:
+        # debugging
+        print("=" * 50)
+        print("REQUEST BODY:", request.body)
+        data = json.loads(request.body)
+        print("PARSED DATA:", data)
+        print("CONVERSATION TYPE:", type(data.get("conversation")))
+        print("CONVERSATION VALUE:", data.get("conversation"))
+        print("=" * 50)
 
-        if not question or not answer or not chosen:
+        question = data.get("question")
+        correct_answer = data.get("correct_answer")
+        user_answer = data.get("user_answer")
+
+        # For subsequent API calls
+        conversation = data.get("conversation", [])
+        user_response = data.get("user_response", "")
+
+        if not question or not correct_answer or not user_answer:
             return JsonResponse({"error": "Missing question or answer."}, status=400)
         
-        prompt = f"""
-        You are an academic tutor explaining quiz answers to university students.
+        # Build conversation payload
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        messages.append({
+            "role": "user",
+            "content": f"Original question: {question}\nCorrect answer: {correct_answer}\nStudent's answer: {user_answer}"
+        })
 
-        Question:
-        {question}
+        # Include previous conversation for context
+        if conversation:
+            messages.extend(conversation)
+        
+        # Inlcude user's response
+        if user_response:
+            messages.append({"role": "user", "content": f"I choose: {user_response}"})
 
-        Chosen Answer:
-        {chosen}
+        # Debug: Check message sequence
+        print("=" * 50)
+        print("MESSAGE SEQUENCE:", [(i, m["role"]) for i, m in enumerate(messages)])
+        print("=" * 50)
 
-        Correct Answer:
-        {answer}
-
-        Please provide a clear and structured explanation that includes:
-        1. The reasoning behind why the correct answer is correct.
-        2. If the chosen answer is wrong, explain why it is incorrect.
-        3. Show any necessary steps, logic, or calculations clearly.
-        4. If using mathematical expressions, format them in LaTeX and wrap them in \\( ... \\) for inline math or \\[ ... \\] for block math.
-        5. Keep your explanation concise (max 5 paragraphs) and suitable for a university-level understanding.
-
-        Use **bold** for key terms and Markdown for clarity.
-        """
-
-        url = "https://api.perplexity.ai/chat/completions"
+        # Call Perplexity API
         headers = {
             "Authorization": f"Bearer {API_KEY}",
             "Content-Type": "application/json"
         }
         payload = {
             "model": "sonar-pro",
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
+            "messages": messages,
             "stream": False
         }
-        try:
-            response = requests.post(url, headers=headers, json=payload, timeout=30)
-            response.raise_for_status()
-            data = response.json()
 
-            explanation = data["choices"][0]["message"]["content"]
+        try:
+            print("ABOUT TO CALL API...")  # ← Add this
+            response = requests.post(API_URL, headers=headers, json=payload, timeout=30)
+            print("API RESPONSE STATUS:", response.status_code)  # ← Add this
+            print("API RESPONSE TEXT:", response.text)  # ← Add this
+            response.raise_for_status()
+            api_data = response.json()
+
+            explanation = api_data["choices"][0]["message"]["content"]
             explanation = ensure_math_delimiters(explanation)
 
+            # Determine if it’s the final message
+            finished = "[END]" in explanation
+
+            # update conversation with user response for the next API call
+            if user_response:
+                conversation.append({"role": "user", "content": f"I choose: {user_response}"})
+                
+            # Update conversation with latest AI reply
+            conversation.append({"role": "assistant", "content": explanation})
+
             # 🔹 Send raw string without escaping backslashes
-            return HttpResponse(
-                json.dumps({"explanation": explanation}, ensure_ascii=False),
-                content_type="application/json"
-            )
+            return JsonResponse({
+                "reply": explanation.replace("[END]", "").strip(),
+                "conversation": conversation,
+                "finished": finished
+            })
         
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({"error": f"API request failed: {str(e)}"}, status=500)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": f"Invalid JSON: {str(e)}"}, status=400)
+        except KeyError as e:
+            return JsonResponse({"error": f"Missing key in response: {str(e)}"}, status=500)
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
         
-    return JsonResponse({"error": "Invalid request method."}, status=405)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 def ensure_math_delimiters(text: str) -> str:
