@@ -31,7 +31,7 @@
   "pk": 14,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of x(t) = 2t",
+    "text": "Determine the classification of $x(t) = 2t$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -41,7 +41,7 @@
   "pk": 15,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x[n] = (-1)^n",
+    "text": "Determine the classification of the signal $x[n] = (-1)^n$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -51,7 +51,7 @@
   "pk": 16,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = -2e ^-2|t|",
+    "text": "Determine the classification of the signal $x(t) = -2e^{-2|t|}$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -61,7 +61,7 @@
   "pk": 17,
   "fields": {
     "topic": 2,
-    "text": "Determine the energy level of the signal x(t) = -2sin(2 pi t).",
+    "text": "Determine the energy level of the signal $x(t) = -2\\sin(2\\pi t)$.",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -71,7 +71,7 @@
   "pk": 18,
   "fields": {
     "topic": 2,
-    "text": "Determine the power level of the signal x(t) = -3",
+    "text": "Determine the power level of the signal $x(t) = -3$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -81,7 +81,7 @@
   "pk": 19,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = -2rect(-t), what is the energy of x(t)?",
+    "text": "Given a signal $x(t) = -2\\text{rect}(-t)$, what is the energy of $x(t)$?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -91,7 +91,7 @@
   "pk": 20,
   "fields": {
     "topic": 3,
-    "text": "Assuming that the signal x(t) is an energy-type signal and its energy is E_x = 4, what is the energy of signal 0.5x(-t)?",
+    "text": "Assuming that the signal $x(t)$ is an energy-type signal and its energy is $E_x = 4$, what is the energy of signal $0.5x(-t)$?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -101,7 +101,7 @@
   "pk": 21,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = -2e^{-2t}, which of the following is x(t)delta(t)?",
+    "text": "Given a signal $x(t) = -2e^{-2t}$, which of the following is $x(t)\\delta(t)$?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -111,7 +111,7 @@
   "pk": 22,
   "fields": {
     "topic": 3,
-    "text": "A signal x(t) is amplified by a factor of 2 and shifted to the left by 2 units, which of the following is the expression of the resultant signal?",
+    "text": "A signal $x(t)$ is amplified by a factor of 2 and shifted to the left by 2 units, which of the following is the expression of the resultant signal?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -121,7 +121,7 @@
   "pk": 23,
   "fields": {
     "topic": 3,
-    "text": "Determine the classification of the signal \\\\( x[n] = \\sum_{k=-\\infty}^{\\infty} 2\\delta[n - k] \\\\).",
+    "text": "Determine the classification of the signal $x[n] = \\sum_{k=-\\infty}^{\\infty} 2\\delta[n - k]$.",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -131,7 +131,7 @@
   "pk": 24,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y(t) = -5x(t - 5), which of the\r\nfollowing is true?",
+    "text": "Given a system whose input-output relation is described by $y(t) = -5x(t - 5)$, which of the following is true?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -141,7 +141,7 @@
   "pk": 25,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y[n] = x[n - 1] + x[n] + x[n + 1],\r\nwhich of the following statements is true?",
+    "text": "Given a system whose input-output relation is described by $y[n] = x[n - 1] + x[n] + x[n + 1]$, which of the following statements is true?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -151,7 +151,7 @@
   "pk": 26,
   "fields": {
     "topic": 4,
-    "text": "Assuming that h(t) = 2rect(t/2), determine the peak value of the waveform y(t) = h(t) * h(t).",
+    "text": "Assuming that $h(t) = 2\\text{rect}(t/2)$, determine the peak value of the waveform $y(t) = h(t) * h(t)$.",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -161,7 +161,7 @@
   "pk": 27,
   "fields": {
     "topic": 4,
-    "text": "Given x[n] = 2rect[n/2] and y[n] = x[n] * x[n], what is the peak value of y[n]?",
+    "text": "Given $x[n] = 2\\text{rect}[n/2]$ and $y[n] = x[n] * x[n]$, what is the peak value of $y[n]$?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -171,7 +171,7 @@
   "pk": 28,
   "fields": {
     "topic": 4,
-    "text": "Assuming that h(t) = 2rect(t/4), determine the duration of the waveform y(t) = h(t) * h(2t)",
+    "text": "Assuming that $h(t) = 2\\text{rect}(t/4)$, determine the duration of the waveform $y(t) = h(t) * h(2t)$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -181,7 +181,7 @@
   "pk": 29,
   "fields": {
     "topic": 2,
-    "text": "Determine the energy  level of the signal x(t) = 2sin(2*pi*t)",
+    "text": "Determine the energy level of the signal $x(t) = 2\\sin(2\\pi t)$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -191,7 +191,7 @@
   "pk": 30,
   "fields": {
     "topic": 2,
-    "text": "Determine the power level of the signal x(t) = 2cos(10*pi*t)",
+    "text": "Determine the power level of the signal $x(t) = 2\\cos(10\\pi t)$",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -201,7 +201,7 @@
   "pk": 31,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = 2sin(2*pi*t)",
+    "text": "Determine the classification of the signal $x(t) = 2\\sin(2\\pi t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -211,7 +211,7 @@
   "pk": 32,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = -8cos(pi*t)",
+    "text": "Determine the classification of the signal $x(t) = -8\\cos(\\pi t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -221,7 +221,7 @@
   "pk": 33,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = 2t-1",
+    "text": "Determine the classification of the signal $x(t) = 2t - 1$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -231,7 +231,7 @@
   "pk": 34,
   "fields": {
     "topic": 2,
-    "text": "Determine the energy level of the signal x(t) = t",
+    "text": "Determine the energy level of the signal $x(t) = t$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -241,7 +241,7 @@
   "pk": 35,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = 5cos(10*pi*t)",
+    "text": "Determine the classification of the signal $x(t) = 5\\cos(10\\pi t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -251,7 +251,7 @@
   "pk": 36,
   "fields": {
     "topic": 2,
-    "text": "Determine the power level of the signal x(t) = 2sin(2*pi*t)",
+    "text": "Determine the power level of the signal $x(t) = 2\\sin(2\\pi t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -261,7 +261,7 @@
   "pk": 37,
   "fields": {
     "topic": 2,
-    "text": "Determine the classification of the signal x(t) = 4sin(2*pi*t)",
+    "text": "Determine the classification of the signal $x(t) = 4\\sin(2\\pi t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -271,7 +271,7 @@
   "pk": 38,
   "fields": {
     "topic": 3,
-    "text": "The exponential Signal x(t)=5e^at is decaying when a satisfies:",
+    "text": "The exponential Signal $x(t) = 5e^{at}$ is decaying when $a$ satisfies:",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -281,7 +281,7 @@
   "pk": 39,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = rect(t/8), what is the expression of signal -5x(2t)?",
+    "text": "Given a signal $x(t) = \\text{rect}(t/8)$, what is the expression of signal $-5x(2t)$?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -291,7 +291,7 @@
   "pk": 40,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = -4rect(-t), what is the energy of 2x(t)?",
+    "text": "Given a signal $x(t) = -4\\text{rect}(-t)$, what is the energy of $2x(t)$?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -301,7 +301,7 @@
   "pk": 41,
   "fields": {
     "topic": 3,
-    "text": "Determine the classification of the signal x[n]= u[n]",
+    "text": "Determine the classification of the signal $x[n] = u[n]$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -311,7 +311,7 @@
   "pk": 42,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = -2rect(t/4), what is the energy of x(t)?",
+    "text": "Given a signal $x(t) = -2\\text{rect}(t/4)$, what is the energy of $x(t)$?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -321,7 +321,7 @@
   "pk": 43,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = rect(t/8), what is the power of signal -5x(t)?",
+    "text": "Given a signal $x(t) = \\text{rect}(t/8)$, what is the power of signal $-5x(t)$?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -331,7 +331,7 @@
   "pk": 44,
   "fields": {
     "topic": 3,
-    "text": "Given a signal x(t) = -2 sec(-t), what is the energy of x(t)?",
+    "text": "Given a signal $x(t) = -2\\sec(-t)$, what is the energy of $x(t)$?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -341,7 +341,7 @@
   "pk": 45,
   "fields": {
     "topic": 3,
-    "text": "A signal x(t) is amplified by a factor of 2 and shifted to the left by 2 units, which of the following is the expression of the resultant signal?",
+    "text": "A signal $x(t)$ is amplified by a factor of 2 and shifted to the left by 2 units, which of the following is the expression of the resultant signal?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -351,7 +351,7 @@
   "pk": 46,
   "fields": {
     "topic": 3,
-    "text": "Assuming that the signal x(t) is an energy-type signal and its energy is Ex = 4, what is the energy of signal 0.5x(-t)?",
+    "text": "Assuming that the signal $x(t)$ is an energy-type signal and its energy is $E_x = 4$, what is the energy of signal $0.5x(-t)$?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -361,7 +361,7 @@
   "pk": 47,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y(t) = x^2(t), which of the following is true?",
+    "text": "Given a system whose input-output relation is described by $y(t) = x^2(t)$, which of the following is true?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -371,7 +371,7 @@
   "pk": 48,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y(t) = -3x(t), which of the following is true?",
+    "text": "Given a system whose input-output relation is described by $y(t) = -3x(t)$, which of the following is true?",
     "difficulty": "EASY",
     "explanation": ""
   }
@@ -381,7 +381,7 @@
   "pk": 49,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y(t) = 2x(t-4), which of the following is true?",
+    "text": "Given a system whose input-output relation is described by $y(t) = 2x(t - 4)$, which of the following is true?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -391,7 +391,7 @@
   "pk": 50,
   "fields": {
     "topic": 4,
-    "text": "Assuming that h(t) = 4rect(t/2), determine the peak value of the waveform y(t) = h(t) * h(t)",
+    "text": "Assuming that $h(t) = 4\\text{rect}(t/2)$, determine the peak value of the waveform $y(t) = h(t) * h(t)$",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -401,7 +401,7 @@
   "pk": 51,
   "fields": {
     "topic": 4,
-    "text": "Consider a LTI system with impluse response h[n] = 2rect[n/2]. Assuming that y[n] is the output of the system when the input signal x[n] = rect[n/8], determine the peak value of y[n].",
+    "text": "Consider a LTI system with impluse response $h[n] = 2\\text{rect}[n/2]$. Assuming that $y[n]$ is the output of the system when the input signal $x[n] = \\text{rect}[n/8]$, determine the peak value of $y[n]$.",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -411,7 +411,7 @@
   "pk": 52,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y(t) = -5 * x(t-5), which of the following is true?",
+    "text": "Given a system whose input-output relation is described by $y(t) = -5x(t - 5)$, which of the following is true?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -421,7 +421,7 @@
   "pk": 53,
   "fields": {
     "topic": 4,
-    "text": "Given a system whose input-output relation is described by y[n] = x[n-1] + x[n] + x[n+1], which of the following statements is true?",
+    "text": "Given a system whose input-output relation is described by $y[n] = x[n - 1] + x[n] + x[n + 1]$, which of the following statements is true?",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -431,7 +431,7 @@
   "pk": 54,
   "fields": {
     "topic": 4,
-    "text": "Assuming that h(t) = 2 * rect(t/2), determine the peak value of the waveform y(t) = h(t) * h(t).",
+    "text": "Assuming that $h(t) = 2\\text{rect}(t/2)$, determine the peak value of the waveform $y(t) = h(t) * h(t)$.",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -441,7 +441,7 @@
   "pk": 55,
   "fields": {
     "topic": 4,
-    "text": "Assuming that h(t) = 2 * rect(t/4), determine the duration of the waveform y(t) = h(t) * h(2t).",
+    "text": "Assuming that $h(t) = 2\\text{rect}(t/4)$, determine the duration of the waveform $y(t) = h(t) * h(2t)$.",
     "difficulty": "HARD",
     "explanation": ""
   }
@@ -712,7 +712,7 @@
   "pk": 82,
   "fields": {
     "question": 21,
-    "text": "e^t",
+    "text": "$e^t$",
     "is_correct": false
   }
 },
@@ -721,7 +721,7 @@
   "pk": 83,
   "fields": {
     "question": 21,
-    "text": "2delta(t)",
+    "text": "$2\\delta(t)$",
     "is_correct": false
   }
 },
@@ -730,7 +730,7 @@
   "pk": 84,
   "fields": {
     "question": 21,
-    "text": "-2delta(t)",
+    "text": "$-2\\delta(t)$",
     "is_correct": true
   }
 },
@@ -739,7 +739,7 @@
   "pk": 85,
   "fields": {
     "question": 22,
-    "text": "2x(t/2)",
+    "text": "$2x(t/2)$",
     "is_correct": false
   }
 },
@@ -748,7 +748,7 @@
   "pk": 86,
   "fields": {
     "question": 22,
-    "text": "2x(-2t)",
+    "text": "$2x(-2t)$",
     "is_correct": false
   }
 },
@@ -757,7 +757,7 @@
   "pk": 87,
   "fields": {
     "question": 22,
-    "text": "2x(t + 2)",
+    "text": "$2x(t + 2)$",
     "is_correct": true
   }
 },
@@ -766,7 +766,7 @@
   "pk": 88,
   "fields": {
     "question": 22,
-    "text": "2x(t - 2)",
+    "text": "$2x(t - 2)$",
     "is_correct": false
   }
 },
@@ -1315,7 +1315,7 @@
   "pk": 149,
   "fields": {
     "question": 38,
-    "text": "a < 0",
+    "text": "$a < 0$",
     "is_correct": true
   }
 },
@@ -1324,7 +1324,7 @@
   "pk": 150,
   "fields": {
     "question": 38,
-    "text": "a = 0",
+    "text": "$a = 0$",
     "is_correct": false
   }
 },
@@ -1333,7 +1333,7 @@
   "pk": 151,
   "fields": {
     "question": 38,
-    "text": "a > 0",
+    "text": "$a > 0$",
     "is_correct": false
   }
 },
@@ -1351,7 +1351,7 @@
   "pk": 153,
   "fields": {
     "question": 39,
-    "text": "-5rect(t/8)",
+    "text": "$-5\\text{rect}(t/8)$",
     "is_correct": false
   }
 },
@@ -1360,7 +1360,7 @@
   "pk": 154,
   "fields": {
     "question": 39,
-    "text": "-5rect(t/4)",
+    "text": "$-5\\text{rect}(t/4)$",
     "is_correct": true
   }
 },
@@ -1369,7 +1369,7 @@
   "pk": 155,
   "fields": {
     "question": 39,
-    "text": "-5rect(t/16)",
+    "text": "$-5\\text{rect}(t/16)$",
     "is_correct": false
   }
 },
@@ -1378,7 +1378,7 @@
   "pk": 156,
   "fields": {
     "question": 39,
-    "text": "-5rect(t/2)",
+    "text": "$-5\\text{rect}(t/2)$",
     "is_correct": false
   }
 },
@@ -1567,7 +1567,7 @@
   "pk": 177,
   "fields": {
     "question": 45,
-    "text": "2x(t)",
+    "text": "$2x(t)$",
     "is_correct": false
   }
 },
@@ -1576,7 +1576,7 @@
   "pk": 178,
   "fields": {
     "question": 45,
-    "text": "2x(t/2)",
+    "text": "$2x(t/2)$",
     "is_correct": false
   }
 },
@@ -1585,7 +1585,7 @@
   "pk": 179,
   "fields": {
     "question": 45,
-    "text": "2x(-2t)",
+    "text": "$2x(-2t)$",
     "is_correct": false
   }
 },
@@ -1594,7 +1594,7 @@
   "pk": 180,
   "fields": {
     "question": 45,
-    "text": "2x(t+2)",
+    "text": "$2x(t + 2)$",
     "is_correct": true
   }
 },

@@ -315,7 +315,7 @@ def explain(request):
             # update conversation with user response for the next API call
             if user_response:
                 conversation.append({"role": "user", "content": f"I choose: {user_response}"})
-                
+
             # Update conversation with latest AI reply
             conversation.append({"role": "assistant", "content": explanation})
 
