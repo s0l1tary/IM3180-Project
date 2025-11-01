@@ -11,10 +11,61 @@
 <div class="container mt-4">
     <div class="header-card">
         <h1>Grades</h1>
-        <img src="{% static 'main/image/grades/gradebanner.png' %}" alt="Student at Desk" class="position-absolute top-50 end-0 translate-middle-y" style="width: 150px; height: auto;">
+    
     </div>
+        <!-- Filter section -->
+        <div class="filter-section">
+            <form method="get">
+                <label for="topic">Filter by Topic:</label>
+                <select name="topic" id="topic">
+                    <option value="">All Topics</option>
+                    {% for topic in topics %}
+                        <option value="{{ topic.id }}" 
+                            {% if selected_topic and topic.id == selected_topic.id %}selected{% endif %}>
+                            {{ topic.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Filter</button>
+                {% if selected_topic %}
+                    <a href="{% url 'grades' %}" class="clear-link">Clear Filter</a>
+                {% endif %}
+            </form>
+        </div>
     <div class="table-card">
-        <table class="table table-bordered">
+                <!-- Quiz sessions table -->
+    <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>TOPIC</th>
+                    <th>QUIZ TYPE</th>
+                    <th>SCORE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in quiz_sessions %}
+                <tr>
+
+                    <td>{{ session.topic.name }}</td>
+                    <td>{{ session.quiz_type }}</td>
+                    <td>
+                        {% if session.score < 25 %}
+                            <span class="text-danger">{{ session.score }}</span>
+                        {% elif session.score <= 50 %}
+                            <span class="text-warning">{{ session.score }}</span>
+                        {% else %}
+                            <span class="text-success">{{ session.score }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="no-data">No quiz sessions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Topic</th>
@@ -44,12 +95,8 @@
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
+        </table> -->
     </div>
     
-    <div class="d-flex justify-content-between">
-        <button class="btn btn-dark">Return</button>
-        <button class="btn btn-outline-secondary">Next Page</button>
-    </div>
 </div>
 {% endblock %}
