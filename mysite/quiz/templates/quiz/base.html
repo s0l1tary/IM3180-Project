@@ -13,20 +13,29 @@
         {% endblock %}
 
         <!-- MathJax for math formula rendering -->
-        <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
         <script>
             window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true
-            },
-            svg: { fontCache: 'global' }
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                    processEscapes: true
+                },
+                svg: { fontCache: 'global' },
+                startup: {
+                    pageReady: () => {
+                        console.log('📘 MathJax pageReady() called');
+                        return MathJax.startup.defaultPageReady().then(() => {
+                            console.log('✅ MathJax fully ready');
+                        });
+                    }
+                }
             };
         </script>
+        
+        <!-- Markdown rendering -->
+       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
     <body>
         <!-- Content -->

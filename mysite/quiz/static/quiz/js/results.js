@@ -1,4 +1,53 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM loaded");
+
+    // ✅ DEBUG: Log everything about MathJax
+    console.log("=== MATHJAX DEBUG ===");
+    console.log("typeof MathJax:", typeof MathJax);
+    console.log("MathJax object:", MathJax);
+    console.log("MathJax.startup:", MathJax?.startup);
+    console.log("MathJax.startup.promise:", MathJax?.startup?.promise);
+    console.log("MathJax.typesetPromise:", MathJax?.typesetPromise);
+    console.log("typeof MathJax.typesetPromise:", typeof MathJax?.typesetPromise);
+    console.log("=== END DEBUG ===");
+
+    // ✅ Simple approach: just wait for MathJax.typesetPromise to exist
+    function waitForMathJax(attempt = 1) {
+        console.log(`Attempt ${attempt}: Checking MathJax...`);
+        
+        if (window.MathJax?.typesetPromise) {
+            console.log("✅ MathJax is ready!");
+            initializePageMath();
+        } else if (attempt < 50) {
+            setTimeout(() => waitForMathJax(attempt + 1), 200);
+        } else {
+            console.error("❌ MathJax failed to load");
+            // Try to diagnose the issue
+            console.log("Final state - window.MathJax:", window.MathJax);
+        }
+    }
+    
+    function initializePageMath() {
+        const mathElements = document.querySelectorAll('.question-text, .correct-answer, .chosen-answer');
+        
+        if (mathElements.length > 0) {
+            console.log(`Rendering math in ${mathElements.length} elements`);
+            window.MathJax.typesetPromise(Array.from(mathElements))
+                .then(() => console.log("✅ Math rendered"))
+                .catch(err => console.error("❌ Render error:", err));
+        }
+    }
+    
+    function renderMathInElement(element) {
+        if (window.MathJax?.typesetPromise) {
+            window.MathJax.typesetPromise([element])
+                .then(() => console.log("✅ Dynamic math rendered"))
+                .catch(err => console.error("❌ Dynamic render error:", err));
+        }
+    }
+    
+    waitForMathJax();
+
     // Progress Bar Animation
     const oldProgress = document.getElementById('oldProgress');
     const gainProgress = document.getElementById('gainProgress');
@@ -109,8 +158,81 @@ document.addEventListener('DOMContentLoaded', function() {
                     explanationText = reply.replace(/^[A-D]\.\s.*$/gm, '').trim();
                 }
 
+
+                // --------------------------------------------------------------------------------Markdown Rendering----------------------------------------------------------------------------------------
+                console.log("=== DEBUG START ===");
+                console.log("Original explanationText:", explanationText);
+
+                // ✅ Configure marked to not mess with math delimiters
+                marked.setOptions({
+                    breaks: true,        // Convert \n to <br>
+                    gfm: true,          // GitHub Flavored Markdown
+                    headerIds: false,   // Don't add IDs to headers
+                    mangle: false       // Don't escape email addresses
+                });
+
+                // Protect math expressions before markdown parsing
+                const mathPlaceholders = [];
+                let protectedText = explanationText;
+                let placeholderCount = 0;
+
+                // Protect display math: $$...$$
+                protectedText = protectedText.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+                    const placeholder = `<!--MATHBLOCK${placeholderCount}-->`;
+                    mathPlaceholders[placeholderCount] = match;
+                    console.log(`Protecting display math ${placeholderCount}:`, match);
+                    placeholderCount++;
+                    return placeholder;
+                });
+                
+                // Protect inline math: $...$
+                protectedText = protectedText.replace(/\$([^\$\n]+?)\$/g, (match) => {
+                    const placeholder = `<!--MATHINLINE${placeholderCount}-->`;
+                    mathPlaceholders[placeholderCount] = match;
+                    console.log(`Protecting inline math ${placeholderCount}:`, match);
+                    placeholderCount++;
+                    return placeholder;
+                });
+                
+                // Protect LaTeX delimiters: \[...\]
+                protectedText = protectedText.replace(/\\\[([\s\S]*?)\\\]/g, (match) => {
+                    const placeholder = `<!--MATHBLOCK${placeholderCount}-->`;
+                    mathPlaceholders[placeholderCount] = match;
+                    console.log(`Protecting \\[...\\] math ${placeholderCount}:`, match);
+                    placeholderCount++;
+                    return placeholder;
+                });
+                
+                // Protect LaTeX delimiters: \(...\)
+                protectedText = protectedText.replace(/\\\((.*?)\\\)/g, (match) => {
+                    const placeholder = `<!--MATHINLINE${placeholderCount}-->`;
+                    mathPlaceholders[placeholderCount] = match;
+                    console.log(`Protecting \\(...\\) math ${placeholderCount}:`, match);
+                    placeholderCount++;
+                    return placeholder;
+                });
+
+                console.log("Protected text:", protectedText);
+                console.log("Total placeholders:", placeholderCount);
+                console.log("Math placeholders array:", mathPlaceholders);
+
+                // Parse markdown
+                let htmlContent = marked.parse(protectedText);
+
+                console.log("HTML after markdown (before restore):", htmlContent);
+
+                // Restore math expressions
+                for (let i = 0; i < placeholderCount; i++) {
+                    htmlContent = htmlContent.replaceAll(`<!--MATHBLOCK${i}-->`, mathPlaceholders[i]);
+                    htmlContent = htmlContent.replaceAll(`<!--MATHINLINE${i}-->`, mathPlaceholders[i]);
+                }
+
+                console.log("HTML after restore:", htmlContent);
+                console.log("=== DEBUG END ===");
+                // ------------------------------------------------------------------------------End of markdown rendering--------------------------------------------------------------------------------
+
                 // Display cleaned explanation text
-                container.innerHTML = explanationText;
+                container.innerHTML = htmlContent;
 
                 // Display options as buttons
                 if (optionMatches && !finished) {
@@ -129,36 +251,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         optionsDiv.appendChild(btnOption);
                     });
                     container.appendChild(optionsDiv);
-
-                    // Render math expressions
-                    if (window.MathJax && window.MathJax.typesetPromise) {
-                        MathJax.typesetPromise([container])
-                            .then(() => console.log("MathJax rendered"))
-                            .catch(err => console.error("MathJax rendering error:", err));
-                    }
                 } else if (finished) {
                     const endMsg = document.createElement('p');
                     endMsg.textContent = "End of explanation session.";
                     endMsg.className = "text-success mt-2";
                     container.appendChild(endMsg);
-
-                    // Render math expressions for final message too
-                    if (window.MathJax && window.MathJax.typesetPromise) {
-                        MathJax.typesetPromise([container])
-                            .then(() => console.log("MathJax rendered"))
-                            .catch(err => console.error("MathJax rendering error:", err));
-                    }
                 }
+
+                renderMathInElement(container);
             }
-            
+
             sendToAI();
         });
     });
 });
 
-  // CSRF token helper
-  function getCookie(name) {
-    let cookieValue = null;
+// CSRF token helper
+function getCookie(name) {
+let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
@@ -170,6 +280,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     return cookieValue;
-  }
-  const csrftoken = getCookie('csrftoken');
-  const explanationCache = {};
+}
+const csrftoken = getCookie('csrftoken');
