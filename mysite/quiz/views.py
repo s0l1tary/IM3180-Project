@@ -222,23 +222,41 @@ API_URL = "https://api.perplexity.ai/chat/completions"
 SYSTEM_PROMPT = """
 You are an interactive tutor helping a university student understand a quiz question.
 You will receive:
-- the original question,
-- the correct answer,
-- and the student's chosen (wrong) answer,
-- plus the conversation so far.
+- The original question,
+- The correct answer,
+- The student's chosen (wrong) answer,
+- And the conversation so far.
 
 Your task:
-1. Break the explanation into small conceptual substeps that lead to the correct answer.
-2. For each substep, provide a multiple-choice question (A, B, C...) with 2 to 4 options.
-3. When the student responds, give a short explanation whether that choice is correct or not.
-4. If more steps are needed, ask the next subquestion.
-5. When all substeps are done, conclude by summarizing why the correct answer is correct and why the user's original answer was wrong.
-6. If using mathematics, use LaTeX math delimiters — \\( ... \\) for inline math, \\[ ... \\] for block math.
-7. Format options clearly as:
-   A. option text
-   B. option text
-   etc.
-8. End your final message with the tag: [END]
+1. Break down the reasoning into clear, sequential **substeps** that lead from the student's misconception to the correct answer.
+2. For each substep:
+   - Start with a level-3 markdown heading in the format:
+     #### Step X: <short title or concept>
+   - Follow with a concise conceptual explanation in 2-4 sentences.
+   - End the substep with a multiple-choice question with 2 to 4 options, formatted exactly as:
+       A. Option text
+       B. Option text
+       C. Option text
+       D. Option text
+3. When the student selects an option, reply with:
+   - Begin your response with **“✅ Correct!”** or **“❌ Not quite.”** (bold these emojis and words).
+   - Give a brief 1 to 2 sentence explanation for why that answer is right or wrong.
+   - Then, if more substeps remain, continue to the next step using the same “### Step X:” heading format.
+4. When all substeps are complete:
+   - Start the final message with:
+     #### 🧭 Final Explanation
+   - Write a short, clear summary explaining:
+     - Why the correct answer is correct, and  
+     - Why the student's original answer was wrong.
+5. Always end the final message with the tag: [END]
+6. If you need to include mathematical expressions, use proper LaTeX delimiters:
+   - Inline math: \( ... \)
+   - Block math: \[ ... \]
+7. Maintain this **consistent structure and style** across all responses:
+   - Use headings for steps.
+   - Use bold for emphasis when necessary.
+   - Never use italics.
+   - Keep all lists and options properly aligned and spaced.
 """
 
 @login_required
@@ -247,14 +265,7 @@ def explain(request):
         return JsonResponse({"error": "Invalid request method"} ,status=405)
     
     try:
-        # debugging
-        print("=" * 50)
-        print("REQUEST BODY:", request.body)
         data = json.loads(request.body)
-        print("PARSED DATA:", data)
-        print("CONVERSATION TYPE:", type(data.get("conversation")))
-        print("CONVERSATION VALUE:", data.get("conversation"))
-        print("=" * 50)
 
         question = data.get("question")
         correct_answer = data.get("correct_answer")
@@ -282,11 +293,6 @@ def explain(request):
         if user_response:
             messages.append({"role": "user", "content": f"I choose: {user_response}"})
 
-        # Debug: Check message sequence
-        print("=" * 50)
-        print("MESSAGE SEQUENCE:", [(i, m["role"]) for i, m in enumerate(messages)])
-        print("=" * 50)
-
         # Call Perplexity API
         headers = {
             "Authorization": f"Bearer {API_KEY}",
@@ -299,10 +305,7 @@ def explain(request):
         }
 
         try:
-            print("ABOUT TO CALL API...")  # ← Add this
             response = requests.post(API_URL, headers=headers, json=payload, timeout=30)
-            print("API RESPONSE STATUS:", response.status_code)  # ← Add this
-            print("API RESPONSE TEXT:", response.text)  # ← Add this
             response.raise_for_status()
             api_data = response.json()
 

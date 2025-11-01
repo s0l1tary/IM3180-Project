@@ -10,22 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("MathJax.typesetPromise:", MathJax?.typesetPromise);
     console.log("typeof MathJax.typesetPromise:", typeof MathJax?.typesetPromise);
     console.log("=== END DEBUG ===");
-
-    // ✅ Simple approach: just wait for MathJax.typesetPromise to exist
-    function waitForMathJax(attempt = 1) {
-        console.log(`Attempt ${attempt}: Checking MathJax...`);
-        
-        if (window.MathJax?.typesetPromise) {
-            console.log("✅ MathJax is ready!");
-            initializePageMath();
-        } else if (attempt < 50) {
-            setTimeout(() => waitForMathJax(attempt + 1), 200);
-        } else {
-            console.error("❌ MathJax failed to load");
-            // Try to diagnose the issue
-            console.log("Final state - window.MathJax:", window.MathJax);
-        }
-    }
     
     function initializePageMath() {
         const mathElements = document.querySelectorAll('.question-text, .correct-answer, .chosen-answer');
@@ -46,7 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    waitForMathJax();
+    // Initialize MathJax when ready
+    if (window.MathJax?.typesetPromise) {
+        initializePageMath();
+    }
 
     // Progress Bar Animation
     const oldProgress = document.getElementById('oldProgress');
@@ -95,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Explanation Button Handler
     document.querySelectorAll('.explain-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            // Hide the explain button
+            btn.style.display = 'none';
 
             const questionText = btn.closest('.question-review-card').querySelector('.question-text').textContent.trim();
             const answerText = btn.closest('.question-review-card').querySelector('.correct-answer').textContent.trim();
@@ -161,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // --------------------------------------------------------------------------------Markdown Rendering----------------------------------------------------------------------------------------
                 console.log("=== DEBUG START ===");
-                console.log("Original explanationText:", explanationText);
 
                 // ✅ Configure marked to not mess with math delimiters
                 marked.setOptions({
@@ -180,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 protectedText = protectedText.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
                     const placeholder = `<!--MATHBLOCK${placeholderCount}-->`;
                     mathPlaceholders[placeholderCount] = match;
-                    console.log(`Protecting display math ${placeholderCount}:`, match);
                     placeholderCount++;
                     return placeholder;
                 });
@@ -189,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 protectedText = protectedText.replace(/\$([^\$\n]+?)\$/g, (match) => {
                     const placeholder = `<!--MATHINLINE${placeholderCount}-->`;
                     mathPlaceholders[placeholderCount] = match;
-                    console.log(`Protecting inline math ${placeholderCount}:`, match);
                     placeholderCount++;
                     return placeholder;
                 });
@@ -198,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 protectedText = protectedText.replace(/\\\[([\s\S]*?)\\\]/g, (match) => {
                     const placeholder = `<!--MATHBLOCK${placeholderCount}-->`;
                     mathPlaceholders[placeholderCount] = match;
-                    console.log(`Protecting \\[...\\] math ${placeholderCount}:`, match);
                     placeholderCount++;
                     return placeholder;
                 });
@@ -207,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 protectedText = protectedText.replace(/\\\((.*?)\\\)/g, (match) => {
                     const placeholder = `<!--MATHINLINE${placeholderCount}-->`;
                     mathPlaceholders[placeholderCount] = match;
-                    console.log(`Protecting \\(...\\) math ${placeholderCount}:`, match);
                     placeholderCount++;
                     return placeholder;
                 });
