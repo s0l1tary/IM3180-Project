@@ -59,14 +59,15 @@ def grades(request):
             # If topic doesn't exist, show all sessions
             pass
     
+    if request.user.is_authenticated:
+        queryset = queryset.filter(user=request.user)
 
     context = {
         'quiz_sessions': quiz_sessions,
         'topics': topics,
         'selected_topic': selected_topic,
+        'queryset' : queryset,
     }
     
 
-    if request.user.is_authenticated:
-        queryset = queryset.filter(user=request.user)
     return render(request, 'main/grades.html', context)

@@ -65,6 +65,26 @@
                 {% endfor %}
             </tbody>
         </table>
+        <br><br>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Topic</th>
+                    <th>Mastery Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for progress in queryset %}
+                <tr>
+                    <td>{{ progress.topic.name }}</td>
+                    <td>{{ progress.mastery_level }}</td>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No progress records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <!-- <table class="table table-bordered">
             <thead>
                 <tr>

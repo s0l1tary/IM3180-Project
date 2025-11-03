@@ -31,5 +31,6 @@ class QuizSession(models.Model):
     score = models.DecimalField(max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    
     def __str__(self):
         return f"{self.user} - {self.topic.name} ({self.quiz_type})"
