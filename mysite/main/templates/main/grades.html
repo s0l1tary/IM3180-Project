@@ -11,30 +11,31 @@
 <div class="container mt-4">
     <div class="header-card">
         <h1>Grades</h1>
-    
     </div>
-        <!-- Filter section -->
-        <div class="filter-section">
-            <form method="get">
-                <label for="topic">Filter by Topic:</label>
-                <select name="topic" id="topic">
-                    <option value="">All Topics</option>
-                    {% for topic in topics %}
-                        <option value="{{ topic.id }}" 
-                            {% if selected_topic and topic.id == selected_topic.id %}selected{% endif %}>
-                            {{ topic.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Filter</button>
-                {% if selected_topic %}
-                    <a href="{% url 'grades' %}" class="clear-link">Clear Filter</a>
-                {% endif %}
-            </form>
-        </div>
-    <div class="table-card">
-                <!-- Quiz sessions table -->
-    <table class="table table-bordered">
+
+    <!-- Filter section -->
+    <div class="filter-section">
+        <form method="get">
+            <label for="topic">Filter by Topic:</label>
+            <select name="topic" id="topic">
+                <option value="">All Topics</option>
+                {% for topic in topics %}
+                    <option value="{{ topic.id }}" 
+                        {% if selected_topic and topic.id == selected_topic.id %}selected{% endif %}>
+                        {{ topic.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filter</button>
+            {% if selected_topic %}
+                <a href="{% url 'grades' %}" class="clear-link">Clear Filter</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="table-card mb-5">
+        <!-- Quiz sessions table -->
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>TOPIC</th>
@@ -65,57 +66,6 @@
                 {% endfor %}
             </tbody>
         </table>
-        <br><br>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Topic</th>
-                    <th>Mastery Level</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for progress in queryset %}
-                <tr>
-                    <td>{{ progress.topic.name }}</td>
-                    <td>{{ progress.mastery_level }}</td>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">No progress records found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <!-- <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Topic</th>
-                    <th>Score</th>
-                    <th>Mastery Level</th>
-                    <th>Last Updated</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for progress in progress_list %}
-                <tr>
-                    <td>{{ progress.topic.name }}</td>
-                    <td>
-                        {% if progress.score < 25 %}
-                            <span class="text-danger">{{ progress.score }}</span>
-                        {% elif progress.score <= 50 %}
-                            <span class="text-warning">{{ progress.score }}</span>
-                        {% else %}
-                            <span class="text-success">{{ progress.score }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ progress.mastery_level }}</td>
-                    <td>{{ progress.last_updated|date:"M d, Y H:i A" }}</td>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">No progress records found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table> -->
     </div>
     
 </div>

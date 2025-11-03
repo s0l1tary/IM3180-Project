@@ -13,6 +13,7 @@ def index(request):
     learning = []
     mastered = []
 
+    # Get topics mastery
     for topic in topics:
         progress = user_progress.filter(topic=topic).first()
 
@@ -22,16 +23,17 @@ def index(request):
             learning.append(topic)
         elif progress.mastery_level == "MASTERED":
             mastered.append(topic)
+    
+    # Get current topic
+    current_topic = learning[0]
 
     return render(request, "main/index.html", {
+        "user_progress": user_progress,
         "not_started": not_started,
         "learning": learning,
-        "mastered": mastered
+        "mastered": mastered,
+        "current_topic": current_topic
     })
-
-@login_required
-def home(request):
-    return render(request, 'main/home.html')
 
 @login_required
 def practice(request):

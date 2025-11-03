@@ -86,9 +86,10 @@ def take_quiz(request):
 
     # Render quiz page
     return render(request, "quiz/quiz.html", {
-    "quiz_id": quiz.id,
-    "quiz_type": quiz.quiz_type,
-    "questions": questions_data
+        "quiz_id": quiz.id,
+        "quiz_type": quiz.quiz_type,
+        "questions": questions_data,
+        "topic": topic
     })
 
 
