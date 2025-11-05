@@ -145,8 +145,18 @@
 
 .explanation-box {
     font-size: 0.95rem;
+    background: #e7f3ff;
+    border-left: 4px solid #007bff; 
+    border-radius: 8px;
 }
 
 .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.user-selection-box {
+    font-size: 0.95rem;
+    background: #d4edda;
+    border-left: 4px solid #28a745; 
+    border-radius: 8px;
 }
