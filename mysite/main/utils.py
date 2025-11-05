@@ -4,6 +4,7 @@ def get_topic(user):
     completed = False
     topic = None
     is_new_topic = False
+    score = 0
 
     # Check if user already has progress
     user_progress = UserTopicProgress.objects.filter(user=user)

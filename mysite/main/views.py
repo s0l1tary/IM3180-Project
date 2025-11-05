@@ -7,6 +7,7 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, 'main/index.html')
     
+    score = 0
     topics  = Topic.objects.all()
     user_progress = UserTopicProgress.objects.filter(user = request.user)
 
@@ -22,19 +23,20 @@ def index(request):
             not_started.append(topic)
         elif progress.mastery_level == "LEARNING":
             learning.append(topic)
+            score = progress.score
         elif progress.mastery_level == "MASTERED":
             mastered.append(topic)
     
     topic_info = get_topic(request.user)
 
     return render(request, "main/index.html", {
-        "user_progress": user_progress,
         "not_started": not_started,
         "learning": learning,
         "mastered": mastered,
         "topic": topic_info["topic"],
         "completed": topic_info["completed"],
-        "is_new_topic": topic_info["is_new_topic"]
+        "is_new_topic": topic_info["is_new_topic"],
+        "score": score
     })
 
 @login_required

@@ -69,14 +69,30 @@
 
         {% elif topic %}
           {% if is_new_topic %}
-            <h1 class="fw-bold">Ready for {{ topic.name }}?</h1>
-            <p class="lead">Start your journey on the next topic</p>
-            <p>Let's begin with {{ topic.name }}!</p>
+            <div class="badge bg-primary mb-2">New Topic</div>
+            <h1 class="fw-bold">{{ topic.name }}?</h1>
+            <p class="lead">Ready to start the next chapter?</p>
+            <p>Begin your journey with {{ topic.name }}</p>
             <a href="{% url 'take_quiz' %}" class="btn-quiz">Start {{ topic.name }}</a>
           {% else %}
+            <div class="badge bg-success mb-2">In Progress</div>
             <h1>{{topic.name}}</h1>
             <p>Resume your journey on {{topic.name}}</p>
             <p>Ready to challenge yourself?</p>
+
+            <!-- Progress Bar -->
+            <div class="topic-progress-container my-3">
+              <div class="topic-progress-bar" 
+                  role="progressbar" 
+                  style="width: {{ score }}%;" 
+                  aria-valuenow="{{ score }}" 
+                  aria-valuemin="0" 
+                  aria-valuemax="100">
+                <span class="progress-text">{{ score|floatformat:0 }}%</span>
+              </div>
+            </div>
+
+
             <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
           {% endif %}
         {% endif %}
@@ -101,7 +117,6 @@
                   <div class="card-body text-center">
                     <h5 class="card-title fw-semibold">{{ topic.name }}</h5>
                     <p class="card-text text-muted">Continue your progress</p>
-                    <p class="card-text">Current progress: {{current_topic.score}}</p>
                   </div>
                 </div>
               </a>
