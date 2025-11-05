@@ -17,3 +17,6 @@ venv/
 
 # Ignore the local SQLite database
 **/db.sqlite3
+
+# Ignore topic pdf
+/media/
