@@ -19,4 +19,5 @@ venv/
 **/db.sqlite3
 
 # Ignore topic pdf
-/media/
+media/topic_pdfs/*.pdf
+
