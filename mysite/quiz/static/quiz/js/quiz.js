@@ -32,8 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((response) => response.json())
       .then((data) => {
-        alert(`Quiz complete! Your score: ${data.score.toFixed(1)}%`);
-        window.location.href = resultsUrl;
+        window.location.href = data.results_url;
       });
     }
   });
@@ -44,10 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.disabled = true;
 
     // Load question text
-    questionText.textContent = questions[index].text;
+    questionText.innerHTML = questions[index].text;
 
     // Load difficulty
-    difficultyTag.textContent = questions[index].difficulty;
+    difficultyTag.innerHTML = questions[index].difficulty;
     difficultyTag.className = `position-absolute top-0 start-0 m-4 badge rounded-pill px-3 py-2 fs-6 ${questions[index].difficulty.toLowerCase()}`;
 
     // Rebuild form options
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "btn btn-outline-primary mb-2 option-btn";
-      btn.textContent = option.text;
+      btn.innerHTML = option.text;
       btn.dataset.optionId = option.id;
 
       btn.addEventListener("click", () => {
@@ -95,6 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       optionsContainer.appendChild(btn)
     });
+
+    // Render math
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      MathJax.typesetPromise([questionText, optionsContainer])
+        .then(() => console.log("MathJax rendered"))
+        .catch(err => console.error("MathJax rendering error:", err));
+    }
   }
 
 

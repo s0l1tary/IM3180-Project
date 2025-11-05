@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+
 from django.contrib.auth.decorators import login_required
 from quiz.models import UserTopicProgress, Topic
 
@@ -17,7 +18,12 @@ def content(request):
 
 @login_required
 def content_pdf(request, topic_id):
-    topic = Topic.objects.get(id = topic_id)
+    topic = get_object_or_404(Topic, id=topic_id)
+    progress = UserTopicProgress.objects.filter(user=request.user, topic=topic).first()
+    if progress and progress.requires_review:
+        progress.requires_review = False
+        progress.save()
+
     return render(request, "content/materials.html", {
         'topic': topic
     })

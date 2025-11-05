@@ -14,3 +14,12 @@ __pycache__/
 
 # Venv
 venv/
+
+# Ignore the local SQLite database
+**/db.sqlite3
+
+# Ignore topic pdf files
+*/media/topic_pdfs/*.pdf
+*/media/topic_pdfs/
+
+

@@ -27,6 +27,7 @@ urlpatterns = [
     path('content/', include('content.urls')),
     path('register/', v.signup, name='signup'),
     path('', include('django.contrib.auth.urls')),
+    
 ]
 
 if settings.DEBUG:
