@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from quiz.models import *
+from .utils import get_topic
 
 def index(request):
     if not request.user.is_authenticated:
@@ -24,15 +25,16 @@ def index(request):
         elif progress.mastery_level == "MASTERED":
             mastered.append(topic)
     
-    # Get current topic
-    current_topic = learning[0]
+    topic_info = get_topic(request.user)
 
     return render(request, "main/index.html", {
         "user_progress": user_progress,
         "not_started": not_started,
         "learning": learning,
         "mastered": mastered,
-        "current_topic": current_topic
+        "topic": topic_info["topic"],
+        "completed": topic_info["completed"],
+        "is_new_topic": topic_info["is_new_topic"]
     })
 
 @login_required

@@ -22,7 +22,7 @@ body {
 #progress-bar {
   width: 0; /* this is dynamically updated */
   height: 8px;
-  background-color: #3d507a; /* your requested dark blue fill */
+  background-color: #3d507a;
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -38,7 +38,7 @@ body {
   border-right-color: transparent !important;
 }
 
-  /* Question box - fixed size, white background */
+/* Question box - fixed size, white background */
 .question-box {
   background-color: #fff !important;
   box-shadow: 0 10px 32px rgba(0,0,0,0.12);

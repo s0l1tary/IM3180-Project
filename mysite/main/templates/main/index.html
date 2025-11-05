@@ -62,10 +62,24 @@
     <!-- Banner -->
     <section class="welcome-section row-1">
       <div class="row-1-col-1">
-        <h1>{{current_topic.name}}</h1>
-        <p>Resume your journey on {{current_topic.name}}</p>
-        <p>Ready to challenge yourself?</p>
-        <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
+        {% if completed == True %}
+          <h1 class="fw-bold text-success">🎉 Congratulations!</h1>
+          <p class="lead">You've mastered all topics in IE2110 Signals and Systems!</p>
+          <p>Your learning journey is complete.</p>
+
+        {% elif topic %}
+          {% if is_new_topic %}
+            <h1 class="fw-bold">Ready for {{ topic.name }}?</h1>
+            <p class="lead">Start your journey on the next topic</p>
+            <p>Let's begin with {{ topic.name }}!</p>
+            <a href="{% url 'take_quiz' %}" class="btn-quiz">Start {{ topic.name }}</a>
+          {% else %}
+            <h1>{{topic.name}}</h1>
+            <p>Resume your journey on {{topic.name}}</p>
+            <p>Ready to challenge yourself?</p>
+            <a href="{% url 'take_quiz' %}" class="btn-quiz">Take Quiz</a>
+          {% endif %}
+        {% endif %}
       </div>
       <div class="row-1-col-2">
         <img src="{% static 'main/image/landingpg/indeximg.png' %}" alt="Landing Page Banner" />
