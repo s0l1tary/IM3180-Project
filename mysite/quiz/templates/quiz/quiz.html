@@ -1,0 +1,41 @@
+{% extends "quiz/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}">
+{% endblock %}
+
+{% block title %}
+Quiz · DeepLearn
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100 body-gradient d-flex flex-column justify-content-between">
+  <div class="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <div class="row flex-grow-1">
+    <div class="col-md-6 d-flex border-end position-relative">
+      <div id="difficulty-tag" class="position-absolute top-0 start-0 m-4 badge rounded-pill bg-secondary px-3 py-2 fs-6">
+      </div>
+      <div class="question-box" id="question-text"></div>
+    </div>
+
+    <div class="col-md-6 d-flex flex-column px-5" style="position: relative;">
+      <div id="options-container"></div>
+    </div>
+  </div>
+
+  <div class="next-btn-footer">
+    <button id="next-btn" disabled>Next</button>
+  </div>
+</div>
+
+{{ questions|json_script:"questions-data" }}
+
+<script>
+  const submitUrl = "{% url 'submit_quiz' quiz_id %}";
+</script>
+<script src="{% static 'quiz/js/quiz.js' %}"></script>
+{% endblock %}

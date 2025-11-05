@@ -1,18 +1,10 @@
 from django.contrib import admin
-from .models import Topic, Question, Option
 
-class OptionInline(admin.TabularInline):
-    model = Option
-    extra = 3
+from .models import UserTopicProgress  # Direct import is fine here
 
-@admin.register(Question)
-class QuestionAdmin(admin.ModelAdmin):
-    list_display = ("id", "topic", "difficulty", "text")
-    list_filter = ("topic", "difficulty")
-    search_fields = ("text",)
-    inlines = [OptionInline]
-
-@admin.register(Topic)
-class TopicAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
-    search_fields = ("name",)
+@admin.register(UserTopicProgress)
+class UserTopicProgressAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'topic', 'score', 'mastery_level', 'last_updated']
+    list_filter = ['user', 'topic', 'mastery_level']
+    search_fields = ['user__username', 'topic__name']
+    ordering = ['-last_updated']
