@@ -94,8 +94,24 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Requesting explanation for:", questionText, answerText, chosenText);
 
             let conversation = []
+            let loading = null; // Track loading element
             
-            container.innerHTML = "Loading...";
+            container.innerHTML = "";
+            showLoading();
+
+            function showLoading() {
+                loading = document.createElement("div");
+                loading.className = 'text-muted my-3 loading-indicator';
+                loading.innerHTML = "Loading...";
+                container.append(loading);
+            }
+
+            function removeLoading() {
+                if (loading && loading.parentElement) {
+                    loading.remove();
+                    loading = null;
+                }
+            }
 
             function sendToAI(user_response = null) {
                 const payload = {
@@ -118,6 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(res => res.json())
                 .then(data => {
+
+                    // Remove loading
+                    removeLoading();
+
                     if (data.error) {
                         container.innerHTML = "Error: " + data.error;
                         return;
@@ -146,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (optionMatches) {
                     explanationText = reply.replace(/^[A-D]\.\s.*$/gm, '').trim();
                 }
-
 
                 // --------------------------------------------------------------------------------Markdown Rendering----------------------------------------------------------------------------------------
                 console.log("=== DEBUG START ===");
@@ -216,7 +235,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // ------------------------------------------------------------------------------End of markdown rendering--------------------------------------------------------------------------------
 
                 // Display cleaned explanation text
-                container.innerHTML = htmlContent;
+                const responseDiv = document.createElement('div');
+                responseDiv.innerHTML = htmlContent;
+                container.appendChild(responseDiv);
 
                 // Display options as buttons
                 if (optionMatches && !finished) {
@@ -229,7 +250,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         btnOption.className = 'btn btn-outline-primary btn-sm d-block my-1';
                         btnOption.addEventListener('click', () => {
                             // Disable buttons after one click
-                            optionsDiv.querySelectorAll('button').forEach(b => b.disabled = true);
+                            optionsDiv.querySelectorAll('button').forEach(b => {
+                                b.disabled = true
+                                b.classList.add('disabled');
+                            });
+
+                            // Show user selection inline
+                            const selectedDiv = document.createElement('div');
+                            selectedDiv.className = 'user-selection-box my-3 p-3';
+                            selectedDiv.innerHTML = `You chose  ${line}`;
+                            container.appendChild(selectedDiv);
+
+                            renderMathInElement(selectedDiv);
+
+                            // Show loading
+                            showLoading();
+
                             sendToAI(line);
                         });
                         optionsDiv.appendChild(btnOption);
@@ -237,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     container.appendChild(optionsDiv);
                 } else if (finished) {
                     const endMsg = document.createElement('p');
-                    endMsg.textContent = "End of explanation session.";
+                    endMsg.textContent = "Explanation complete!";
                     endMsg.className = "text-success mt-2";
                     container.appendChild(endMsg);
                 }
