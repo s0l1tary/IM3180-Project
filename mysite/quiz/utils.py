@@ -30,7 +30,7 @@ def update_user_progress(user_progress, quiz_type, quiz_score, question_records)
     user_progress.update_streaks(quiz_score)
     streak_multiplier = user_progress.get_streak_multiplier()
 
-    base_increment = 3
+    base_increment = 5
     if quiz_type == 'PLACEMENT':
         updated_score = quiz_score
 

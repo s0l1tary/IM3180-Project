@@ -94,24 +94,18 @@ class UserTopicProgress(models.Model):
     def get_streak_multiplier(self):
         multiplier = 1.0
 
-        if self.pass_streak >= 10:
+        if self.pass_streak >= 5:
             multiplier += 0.25
-        elif self.pass_streak >= 7:
-            multiplier += 0.20
-        elif self.pass_streak >= 5:
-            multiplier += 0.15
         elif self.pass_streak >= 3:
-            multiplier += 0.10
+            multiplier += 0.15
         elif self.pass_streak >= 2:
-            multiplier += 0.05
+            multiplier += 0.10
         
         # High score streak bonus (max +25%)
-        if self.high_score_streak >= 5:
+        if self.high_score_streak >= 3:
             multiplier += 0.25
-        elif self.high_score_streak >= 3:
-            multiplier += 0.20
         elif self.high_score_streak >= 2:
-            multiplier += 0.10
+            multiplier += 0.15
 
         return min(1.5, multiplier)
 
@@ -139,6 +133,9 @@ class QuizSession(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     score = models.FloatField(default=0.0)
+
+    def get_time_spent(self):
+        return (self.completed_at - self.started_at).total_seconds()
 
     def __str__(self):
         return f"{self.user.username} - {self.topic.name} ({self.quiz_type})"
