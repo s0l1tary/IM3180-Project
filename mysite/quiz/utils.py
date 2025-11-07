@@ -25,7 +25,39 @@ def calculate_quiz_score(question_records):
 
     return round(score, 2)
 
-def update_user_progress(user_progress, quiz_type, quiz_score, question_records):
+def calculate_time_confidence(time_spent_seconds, num_questions, score, expected_time_per_question=30):
+    if score < 40:
+        return 1.0  # No bonus if failing
+    
+    expected_time = num_questions * expected_time_per_question
+    
+    if time_spent_seconds < 1:
+        return 1.0
+    
+    time_ratio = time_spent_seconds / expected_time
+    
+    # Calculate base time multiplier
+    if time_ratio <= 0.3:
+        base_multiplier = 1.0  # Suspiciously fast
+    elif time_ratio <= 0.6:
+        base_multiplier = 1.3  # Very fast
+    elif time_ratio <= 0.8:
+        base_multiplier = 1.2  # Fast
+    elif time_ratio <= 1.0:
+        base_multiplier = 1.1  # Good pace
+    else:
+        base_multiplier = 1.0  # Normal/slow
+    
+    # Scale bonus by accuracy (40-100% maps to 0-100% of bonus)
+    accuracy_scale = (score - 40) / 60
+    
+    # Final multiplier
+    bonus = base_multiplier - 1.0
+    final_multiplier = 1.0 + (bonus * accuracy_scale)
+    
+    return round(final_multiplier, 2)
+
+def update_user_progress(user_progress, quiz_type, quiz_score, question_records, time_spent=None):
     # Update streaks before calculating score
     user_progress.update_streaks(quiz_score)
     streak_multiplier = user_progress.get_streak_multiplier()
@@ -37,14 +69,22 @@ def update_user_progress(user_progress, quiz_type, quiz_score, question_records)
         # Update recent_score_gain
         user_progress.recent_score_gain = quiz_score
     else:
-        # Calculate score increment
+        # Calculate difficulty factor
         total_weight = sum(weights[q["difficulty"]] for q in question_records)
         difficulty_factor = total_weight/len(question_records)
+
+        # Calculate performance multiplier
         performance_multiplier = 0.4 + 1.6 * (quiz_score / 100)
+
+        # Calculate time confidence
+        time_confidence = 1
+        if time_spent:
+            num_questions = len(question_records)
+            time_confidence = calculate_time_confidence(time_spent, num_questions, quiz_score)
 
         base_score_gain = base_increment * difficulty_factor * performance_multiplier
 
-        total_score_gain = base_score_gain * streak_multiplier
+        total_score_gain = base_score_gain * streak_multiplier * time_confidence
 
         updated_score = min(100, user_progress.score + total_score_gain)
 

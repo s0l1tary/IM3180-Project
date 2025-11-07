@@ -145,7 +145,8 @@ def submit_quiz(request, quiz_id):
 
     # Update UserTopicProgress
     user_progress = UserTopicProgress.objects.get(user=user, topic=quiz.topic)
-    update_user_progress(user_progress, quiz.quiz_type, score, question_records)
+    time_spent = quiz.get_time_spent()
+    update_user_progress(user_progress, quiz.quiz_type, score, question_records, time_spent)
 
     results_url = reverse('results', args=[quiz.id])
 
