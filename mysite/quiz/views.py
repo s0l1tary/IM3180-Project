@@ -191,7 +191,7 @@ def results(request, quiz_id):
     time_taken_formatted = format_time(time_spent)
     
     # Calculate time performance
-    time_performance = get_time_performance(time_spent, total_questions)
+    time_performance = get_time_performance(time_spent, easy_total, hard_total)
 
     context = {
         'quiz_session': quiz,

@@ -25,32 +25,37 @@ def calculate_quiz_score(question_records):
 
     return round(score, 2)
 
-def calculate_time_confidence(time_spent_seconds, num_questions, score, expected_time_per_question=5):
+
+expected_time_difficulty = {
+    "EASY": 5,
+    "HARD": 10
+}
+
+def calculate_time_confidence(time_spent_seconds, easy_count, hard_count, score):
     if score < 40:
         return 1.0  # No bonus if failing
     
-    expected_time = num_questions * expected_time_per_question
+    expected_time = (easy_count * expected_time_difficulty["EASY"]) + (hard_count * expected_time_difficulty["HARD"]) 
     
     if time_spent_seconds < 1:
         return 1.0
-    
+
     time_ratio = time_spent_seconds / expected_time
     
     # Calculate base time multiplier
     if time_ratio <= 0.5:
-        base_multiplier = 1.5  # Very fast
+        bonus = 0.5  # Very fast
     elif time_ratio <= 0.7:
-        base_multiplier = 1.3  # Fast
+        bonus = 0.3  # Fast
     elif time_ratio <= 1.0:
-        base_multiplier = 1.1  # Good pace
+        bonus = 0.1  # Good pace
     else:
-        base_multiplier = 1.0  # Normal/slow
+        bonus = 0  # Normal/slow
     
     # Scale bonus by accuracy (40-100% maps to 0-100% of bonus)
     accuracy_scale = (score - 40) / 60
     
     # Final multiplier
-    bonus = base_multiplier - 1.0
     final_multiplier = 1.0 + (bonus * accuracy_scale)
     
     return round(final_multiplier, 2)
@@ -77,8 +82,11 @@ def update_user_progress(user_progress, quiz_type, quiz_score, question_records,
         # Calculate time confidence
         time_confidence = 1
         if time_spent:
-            num_questions = len(question_records)
-            time_confidence = calculate_time_confidence(time_spent, num_questions, quiz_score)
+            # Calculate easy and hard questions
+            easy_count = sum(1 for q in question_records if q["difficulty"] == "EASY")
+            hard_count = sum(1 for q in question_records if q["difficulty"] == "HARD")
+
+            time_confidence = calculate_time_confidence(time_spent, easy_count, hard_count, quiz_score)
 
         base_score_gain = base_increment * difficulty_factor * performance_multiplier
 
@@ -168,9 +176,10 @@ def format_time(seconds):
             return f"{minutes}m"
         return f"{minutes}m {remaining_seconds}s"
     
-def get_time_performance(time_spent, num_questions):
-    expected = num_questions * 30
-    ratio = time_spent / expected
+def get_time_performance(time_spent, easy_count, hard_count):
+    expected_time = (easy_count * expected_time_difficulty["EASY"]) + (hard_count * expected_time_difficulty["HARD"]) 
+    ratio = time_spent / expected_time
+    print(ratio)
 
     if ratio <= 0.6:
         return {
