@@ -25,7 +25,7 @@ def calculate_quiz_score(question_records):
 
     return round(score, 2)
 
-def calculate_time_confidence(time_spent_seconds, num_questions, score, expected_time_per_question=30):
+def calculate_time_confidence(time_spent_seconds, num_questions, score, expected_time_per_question=5):
     if score < 40:
         return 1.0  # No bonus if failing
     
@@ -37,12 +37,10 @@ def calculate_time_confidence(time_spent_seconds, num_questions, score, expected
     time_ratio = time_spent_seconds / expected_time
     
     # Calculate base time multiplier
-    if time_ratio <= 0.3:
-        base_multiplier = 1.0  # Suspiciously fast
-    elif time_ratio <= 0.6:
-        base_multiplier = 1.3  # Very fast
-    elif time_ratio <= 0.8:
-        base_multiplier = 1.2  # Fast
+    if time_ratio <= 0.5:
+        base_multiplier = 1.5  # Very fast
+    elif time_ratio <= 0.7:
+        base_multiplier = 1.3  # Fast
     elif time_ratio <= 1.0:
         base_multiplier = 1.1  # Good pace
     else:
@@ -158,3 +156,49 @@ def get_question_mix(user, topic):
         num_easy, num_hard = 7, 3
     
     return num_easy, num_hard
+
+
+def format_time(seconds): 
+    if seconds < 60:
+        return f"{int(seconds)}s"
+    else:
+        minutes = int(seconds // 60)
+        remaining_seconds = int(seconds % 60)
+        if remaining_seconds == 0:
+            return f"{minutes}m"
+        return f"{minutes}m {remaining_seconds}s"
+    
+def get_time_performance(time_spent, num_questions):
+    expected = num_questions * 30
+    ratio = time_spent / expected
+
+    if ratio <= 0.6:
+        return {
+            'label': 'Lightning Fast',
+            'icon': '⚡',
+            'class': 'time-excellent'
+        }
+    elif ratio <= 0.8:
+        return {
+            'label': 'Fast',
+            'icon': '🚀',
+            'class': 'time-good'
+        }
+    elif ratio <= 1.2:
+        return {
+            'label': 'Steady Pace',
+            'icon': '👍',
+            'class': 'time-normal'
+        }
+    elif ratio <= 2.0:
+        return {
+            'label': 'Careful & Thorough',
+            'icon': '🤔',
+            'class': 'time-slow'
+        }
+    else:
+        return {
+            'label': 'Taking Your Time',
+            'icon': '🐢',
+            'class': 'time-very-slow'
+        }

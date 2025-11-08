@@ -11,7 +11,7 @@ import markdown
 from markdown.extensions import Extension
 import requests
 from django.utils import timezone
-from .utils import calculate_quiz_score, update_user_progress, get_question_mix
+from .utils import *
 
 @login_required
 def take_quiz(request):
@@ -186,6 +186,13 @@ def results(request, quiz_id):
     hard_correct = question_records.filter(difficulty='HARD', is_correct=True).count()
     hard_total = question_records.filter(difficulty='HARD').count()
 
+    # Calculate time taken
+    time_spent = quiz.get_time_spent()
+    time_taken_formatted = format_time(time_spent)
+    
+    # Calculate time performance
+    time_performance = get_time_performance(time_spent, total_questions)
+
     context = {
         'quiz_session': quiz,
         'question_records': question_records,
@@ -208,6 +215,11 @@ def results(request, quiz_id):
         'high_score_streak': progress.high_score_streak if progress else None,
         'fail_streak': progress.fail_streak if progress else 0,
         'requires_review': progress.requires_review if progress else False,
+
+        # Time spent
+        'time_spent': time_spent,
+        'time_taken_formatted': time_taken_formatted,
+        'time_performance': time_performance,
     }
 
     return render(request, "quiz/results.html", context)
