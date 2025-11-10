@@ -20,18 +20,6 @@
     <form method="POST", class="form-group">
         {% csrf_token %}
         {{ form|crispy }}
-        <!-- <div class="mb-3">
-            <label for="signup-email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="signup-email" placeholder="Enter email">
-        </div>
-        <div class="mb-3">
-            <label for="signup-password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="signup-password" placeholder="Enter password">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="signup-remember">
-            <label class="form-check-label" for="signup-remember">Stay Logged In</label>
-        </div> -->
         <button type="submit" class="btn btn-signup">Sign Up</button>
     </form>
     <p class="register"><a href="{% url 'login' %}" class="text-decoration-none">Already have an account</a></p>

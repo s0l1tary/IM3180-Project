@@ -329,14 +329,14 @@ def explain(request):
             # Determine if it’s the final message
             finished = "[END]" in explanation
 
-            # update conversation with user response for the next API call
+            # Update conversation with user response for the next API call
             if user_response:
                 conversation.append({"role": "user", "content": f"I choose: {user_response}"})
 
             # Update conversation with latest AI reply
             conversation.append({"role": "assistant", "content": explanation})
 
-            # 🔹 Send raw string without escaping backslashes
+            # Send raw string without escaping backslashes
             return JsonResponse({
                 "reply": explanation.replace("[END]", "").strip(),
                 "conversation": conversation,
