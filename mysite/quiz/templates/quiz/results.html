@@ -118,7 +118,7 @@
     <!-- Streaks Display -->
     {% if passed and progress %}
         {% if progress.pass_streak > 0 or progress.high_score_streak > 0 %}
-        <div class="card bg-primary text-white mb-4">
+        <div class="card bg-primary text-white mb-4" id="active-streak-card">
             <div class="card-body">
                 <h4 class="card-title">🔥 Active Streaks</h4>
                 <div class="row mt-3">
@@ -178,13 +178,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 mb-3 mb-md-0">
-                    <div class="stat-card border rounded">
+                    <div class="stat-card border rounded easy-question">
                         <p class="text-muted mb-2">Easy Questions</p>
                         <div class="stat-value">{{ easy_correct }}/{{ easy_total }}</div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="stat-card border rounded">
+                    <div class="stat-card border rounded hard-question">
                         <p class="text-muted mb-2">Hard Questions</p>
                         <div class="stat-value">{{ hard_correct }}/{{ hard_total }}</div>
                     </div>
@@ -192,6 +192,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Detailed Question Review -->
     <div class="card mb-4 border-0 shadow">
@@ -210,7 +211,7 @@
                         <span class="badge bg-dark text-light me-2" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;">
                         Question {{ forloop.counter }}
                     </span>
-                    <span class="badge {% if record.difficulty == 'EASY' %}bg-info text-dark{% else %}bg-warning text-dark{% endif %}" style="font-size: 0.85rem; padding: 0.4rem 0.7rem;">
+                    <span class="badge {% if record.difficulty == 'EASY' %}badge-light-green text-dark{% else %}bg-warning text-dark{% endif %}" style="font-size: 0.85rem; padding: 0.4rem 0.7rem;">
                         {{ record.difficulty }}
                     </span>
                     </div>
@@ -286,27 +287,30 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="card mb-4">
-        <div class="card-body text-center py-4">
-            {% if requires_review %}
-                <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
-                    <i class="fas fa-book-open"></i> Review Course Content
-                </a>
-                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </a>
-                <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
-            {% else %}
-                <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2">
-                    <i class="fas fa-arrow-right"></i> Continue to Next Quiz
-                </a>
-                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </a>
-            {% endif %}
+    <div class="card mb-4" style="background: transparent; border: none; box-shadow: none;">
+      <div class="card-body text-center py-4">
+        <div id="button-container">
+          {% if requires_review %}
+            <a href="{% url 'content_pdf' topic.id %}" class="btn btn-warning btn-lg mb-2">
+              <i class="fas fa-book-open"></i> Review Course Content
+            </a>
+            <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2 btn-dashboard">
+              <i class="fas fa-home"></i> Back to Dashboard
+            </a>
+            <p class="text-muted mt-2 mb-0">Complete the review to unlock more quizzes</p>
+          {% else %}
+            <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg mb-2 mr-2 btn-continue">
+              <i class="fas fa-arrow-right"></i> Continue to Next Quiz
+            </a>
+            <a href="{% url 'index' %}" class="btn btn-secondary btn-lg mb-2 btn-dashboard">
+              <i class="fas fa-home"></i> Back to Dashboard
+            </a>
+          {% endif %}
         </div>
+      </div>
     </div>
-</div>
+
+
 
 <script>
   const explainUrl = "{% url 'explain' %}";

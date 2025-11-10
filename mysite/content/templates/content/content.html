@@ -9,10 +9,12 @@
  
 {% block content %}
     <div class="container mt-5">
-    <h1 class="mb-4">Review Content</h1>
+        <div class="content-header-card">
+            <h1>Review Content</h1>
+        </div>
 
     <!-- Learning Topics -->
-    <h3 class="mb-3">Learning</h3>
+    <h3 class="mb-3 learning-title">Learning</h3>
     {% if learning_topics %}
         <div class="row">
             {% for topic in learning_topics %}
@@ -32,7 +34,7 @@
     {% endif %}
 
     <!-- Mastered Topics -->
-    <h3 class="mt-4 mb-3">Mastered</h3>
+    <h3 class="mt-4 mb-3 mastered-title">Mastered</h3>
     {% if mastered_topics %}
         <div class="row">
             {% for topic in mastered_topics %}
