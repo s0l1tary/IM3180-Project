@@ -1,7 +1,41 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #c9e3fd !important;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.quiz-results h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 2rem 0 2rem 0;
+    color: #222831;  /* Darker contrast */
+    text-transform: capitalize; /* Capitalize words */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding-bottom: 1rem;
+}
+
+.results-center-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Results section styling */
 .quiz-results {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+  max-width: 1000px;
+  width: 100%;
+  padding: 30px;
+  background: transparent !important; 
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .score-circle {
@@ -66,6 +100,20 @@
     transition: all 0.3s ease;
 }
 
+.easy-question {
+    border-color: #4fb056!important; /* green */
+    border-width: 3px !important;     
+    border-style: solid !important;   
+}
+
+.hard-question {
+    border-color: #f5e482 !important; /* yellow */
+    border-width: 3px !important;     
+    border-style: solid !important;   
+}
+
+
+
 .stat-badge:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -88,6 +136,11 @@
 .badge-value {
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.badge-light-green {
+    background-color: #81c27c; 
+    color: #000000;            
 }
 
 /* Gradient header */
@@ -130,6 +183,11 @@
     }
 }
 
+#active-streak-card {
+    background-color: #4f72e3 !important;
+    color: #ffffff !important;
+}
+
 /* Question Review Styling */
 .question-review-card {
     transition: transform 0.2s ease;
@@ -153,6 +211,7 @@
 .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+<<<<<<< Updated upstream
 
 .user-selection-box {
     font-size: 0.95rem;
@@ -160,3 +219,29 @@
     border-left: 4px solid #28a745; 
     border-radius: 8px;
 }
+=======
+.btn-continue {
+    background-color: #4f72e3 !important;   
+    border-color: #4f72e3 !important;
+    color: #fff !important;
+}
+
+.btn-continue:hover, .btn-continue:focus {
+    background-color: #2654eb !important;
+    border-color: #2654eb!important;
+    color: #fff !important;
+}
+
+.btn-dashboard {
+    background-color: #5a5a5a !important;   
+    border-color: #5a5a5a !important;
+    color: #fff !important;
+}
+
+.btn-dashboard:hover, .btn-dashboard:focus {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #fff !important;
+}
+
+>>>>>>> Stashed changes
