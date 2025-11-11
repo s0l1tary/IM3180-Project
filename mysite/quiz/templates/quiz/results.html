@@ -80,7 +80,7 @@
                 </div>
                 
                 <!-- Milestone Markers -->
-                <div class="position-absolute" style="top: -5px; left: 90%; transform: translateX(-50%);">
+                <div class="position-absolute" style="top: -5px; left: 100%; transform: translateX(-50%);">
                     <i class="fas fa-trophy text-warning" style="font-size: 20px;"></i>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                 </div>
             </div>
             
-            {% if progress.score >= 90 %}
+            {% if progress.score == 100 %}
                 <div class="alert alert-success text-center mt-3 mb-0">
                     <i class="fas fa-trophy"></i> 
                     <strong>Topic Completed!</strong>
@@ -127,7 +127,7 @@
         </div>
     </div>
 
-         <!-- Streaks Display -->
+    <!-- Streaks Display -->
     {% if passed and progress %}
         {% if progress.pass_streak > 0 or progress.high_score_streak > 0 %}
         <div class="card bg-primary text-white mb-4" id="active-streak-card">
