@@ -5,6 +5,17 @@ body {
   padding: 20px;
 }
 
+/* Quiz topic header styling */
+.quiz-topic-header {
+  padding-top: 12px;
+  padding-bottom: 8px;
+}
+
+.topic-text {
+  color: #3d507a;
+  font-size: 1.75rem;
+}
+
 /* Progress bar margin */
 .progress-bar-container {
   margin-top: 32px;
