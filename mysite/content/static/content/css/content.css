@@ -1,7 +1,27 @@
 body {
     background-color: #d4e7fd;
 }
+.container.mt-5 {
+    margin-top: 1.5rem !important;
+}
+.content-header-card {
+    border: 2px solid #babbbf;
+    border-radius: 10px;
+    background-color: #f9fbfd;
+    padding: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+}
+.learning-title {
+    color: #000000;   
+    font-weight: 500;
+}
 
+.mastered-title {
+    color: #000000;   
+    font-weight: 500;
+}
 .card {
     border: 2px solid #d4e4f5;
     border-radius: 10px;
