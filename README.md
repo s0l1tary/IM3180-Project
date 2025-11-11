@@ -79,5 +79,23 @@ python manage.py loaddata quiz/fixtures/initial_data.json
 ## For AI
 - https://docs.perplexity.ai/getting-started/quickstart#python
 
+## On a fresh import of the project
+1) python -m venv venv
+2) - activate the virtual environment
+    ```
+    # for Windows users
+    .\venv\Scripts\activate.bat
+    .\venv\Scripts\Activate.ps1
+
+    # for mac0S / Linux
+    source venv/bin/activate
+
+3) pip install -r requirements.txt
+4) cd mysite
+5) python manage.py loaddata quiz/fixtures/initial_data.json
+6) python manage.py makemigrations
+7) python manage.py migrate
+8) python manage.py runserver
+
 
 

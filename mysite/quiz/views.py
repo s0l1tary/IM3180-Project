@@ -7,11 +7,18 @@ from .models import *
 import random
 import json
 import re
-import markdown
 from markdown.extensions import Extension
 import requests
 from django.utils import timezone
 from .utils import *
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Automatically loads .env file from project root
+
+API_KEY = os.getenv("API_KEY")
+API_URL = os.getenv("API_URL")
+# print(f"Loaded API_KEY: {API_KEY is not None}, API_URL: {API_URL is not None}")
 
 @login_required
 def take_quiz(request):
@@ -228,10 +235,6 @@ def results(request, quiz_id):
 @login_required
 def completed(request):
     return render(request, "quiz/completed.html")
-
-
-API_KEY = "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"
-API_URL = "https://api.perplexity.ai/chat/completions"
 
 SYSTEM_PROMPT = """
 You are an interactive tutor helping a university student understand a quiz question.
