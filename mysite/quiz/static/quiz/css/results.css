@@ -211,7 +211,6 @@ body {
 .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-<<<<<<< Updated upstream
 
 .user-selection-box {
     font-size: 0.95rem;
@@ -273,7 +272,6 @@ body {
     color: #2c3e50;
     box-shadow: 0 4px 15px rgba(168, 237, 234, 0.4);
 }
-=======
 .btn-continue {
     background-color: #4f72e3 !important;   
     border-color: #4f72e3 !important;
@@ -298,4 +296,3 @@ body {
     color: #fff !important;
 }
 
->>>>>>> Stashed changes
