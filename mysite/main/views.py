@@ -41,10 +41,9 @@ def index(request):
 
 @login_required
 def grades(request):
-    queryset = UserTopicProgress.objects.all()
 
     # Get all quiz sessions
-    quiz_sessions = QuizSession.objects.select_related('topic').all()
+    quiz_sessions = QuizSession.objects.select_related('topic').filter(user = request.user)
 
     # Get unique topics for dropdown
     topics = Topic.objects.all()
@@ -60,16 +59,11 @@ def grades(request):
         except Topic.DoesNotExist:
             # If topic doesn't exist, show all sessions
             pass
-    
-    if request.user.is_authenticated:
-        queryset = queryset.filter(user=request.user)
 
     context = {
         'quiz_sessions': quiz_sessions,
         'topics': topics,
         'selected_topic': selected_topic,
-        'queryset' : queryset,
     }
-    
 
     return render(request, 'main/grades.html', context)
